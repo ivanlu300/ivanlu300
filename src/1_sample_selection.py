@@ -10,7 +10,7 @@ derived_path = Path('1_sample_selection.py').resolve().parents[2] / 'Data' / 'de
 
 # Read data
 main_var = ['idauniq', 'w8scout',
-            'scprt', 'chinhh', 'cafam', 'w8nssec5', # controls
+            'scprt', 'chinhh', 'cafam', 'w8nssec8', # controls
             'cahha', # sample selection
             'hehelf', # self-reported health
             'psceda', 'pscedb', 'pscedc', 'pscedd', 'pscede', 'pscedf', 'pscedg', 'pscedh', # ces-d
@@ -53,7 +53,7 @@ help_list = ['cafam'] + [f'cafam{number}' for number in range(2, 26)]
 full_8 = full_8.loc[~((full_8[help_list] == 1).any(axis=1)), :] # remove respondents living with informal care (e.g. son) (-674)
 
 full_8['wselfd'].value_counts(dropna=False) # select respondents who are retired (-2278)
-full_8 = full_8.loc[full_8['wselfd'] == 3, :]
+full_8 = full_8.loc[full_8['wselfd'] == 3, :] # N = 4183
 
 ########## Save data
 full_8.to_csv(derived_path / 'wave_8.csv', index=False)
@@ -61,5 +61,7 @@ full_8.to_csv(derived_path / 'wave_8.csv', index=False)
 ########## Inspection
 full_8['hobb'].value_counts()
 
-full_8['scprt'].value_counts() # 2803 lives with partner
-full_8['chinhh'].value_counts() # 474 do not live with children
+full_8['scprt'].value_counts(dropna=False) # 2803 lives with partner
+full_8['chinhh'].value_counts(dropna=False) # 474 do not live with children
+
+full_8['w8nssec8'].value_counts(dropna=False) # 8-category version is better as there are fewer 'other' observations
