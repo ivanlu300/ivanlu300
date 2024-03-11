@@ -11,7 +11,7 @@ derived_path = Path('1_sample_selection.py').resolve().parents[2] / 'Data' / 'de
 # Read data
 full_8 = pd.read_csv(derived_path / 'wave_8.csv')
 
-# Treatment
+########## Treatment
 full_8['hobb'].value_counts(dropna=False)
 full_8['internet_access'] = np.select(condlist=[full_8['hobb'] == 1, full_8['hobb'] == 2],
                                       choicelist=[1, 0],
@@ -21,12 +21,24 @@ full_8['scint'].value_counts(dropna=False)
 full_8['internet_freq'] = np.where(full_8['scint'] > 0, full_8['scint'], np.nan) # 1 = every day, 6 = never
 
 device_list = ['scinddt', 'scindlt', 'scindtb', 'scindph', 'scind95', 'scind96']
-full_8['scinddt'].value_counts(dropna=False)
-full_8[device_list] = full_8[device_list].where(full_8[device_list] >= 0, other=np.nan) # 1 = yes, 2 = no
+device_list_no96 = ['scinddt', 'scindlt', 'scindtb', 'scindph', 'scind95']
+pd.crosstab(full_8['internet_freq'], full_8['scinddt'])
+# respondents with scint == 5|6 were not asked about devices (hence coded as -1), but I assume they have no device
+full_8[device_list_no96] = full_8[device_list_no96].where(full_8['scint'] < 5, other=0)
+pd.crosstab(full_8['internet_freq'], full_8['scind96'])
+full_8['scind96'] = full_8['scind96'].where(full_8['scint'] < 5, other=1)
+# then deal with NAs
+full_8[device_list] = full_8[device_list].where(full_8[device_list] >= 0, other=np.nan) # 1 = yes, 0 = no
 
 activity_list = ['scinaem', 'scinacl', 'scinaed', 'scinabk', 'scinash', 'scinasl', 'scinasn', 'scinact', 'scinanw', 'scinast', 'scinagm', 'scinajb', 'scinaps', 'scina95', 'scina96']
-full_8['scinaem'].value_counts(dropna=False)
-full_8[activity_list] = full_8[activity_list].where(full_8[activity_list] >= 0, other=np.nan) # 1 = yes, 2 = no
+activity_list_no96 = ['scinaem', 'scinacl', 'scinaed', 'scinabk', 'scinash', 'scinasl', 'scinasn', 'scinact', 'scinanw', 'scinast', 'scinagm', 'scinajb', 'scinaps', 'scina95']
+pd.crosstab(full_8['internet_freq'], full_8['scinaem'])
+# respondents with scint == 5|6 were not asked about activities (hence coded as -1), but I assume they have no activity
+full_8[activity_list_no96] = full_8[activity_list_no96].where(full_8['scint'] < 5, other=0)
+pd.crosstab(full_8['internet_freq'], full_8['scina96'])
+full_8['scina96'] = full_8['scina96'].where(full_8['scint'] < 5, other=1)
+# then deal with NAs
+full_8[activity_list] = full_8[activity_list].where(full_8[activity_list] >= 0, other=np.nan) # 1 = yes, 0 = no
 
 # Outcome - self-reported health
 full_8['hehelf'].value_counts(dropna=False) # 1 = excellent, 5 = poor
@@ -80,7 +92,7 @@ full_8['cancer'].value_counts(dropna=False)
 # full_8['cesd'] = np.select(condlist=[(full_8[cesd_list] == 1).sum(axis=1) >= 3, (full_8[cesd_list] < 0).any(axis=1)],
 #                            choicelist=[1, np.nan],
 #                            default=0)
-# full_8['cesd'].value_counts(dropna=False)
+# full_8['cesd'].value_counts(dropna=False) # 658
 # # Confirmed: the 'cesd_sc' in the ifs derived dataset has already adjusted for the reverse score of positive items
 full_8['cesd_sc'].value_counts(dropna=False)
 full_8['cesd'] = np.where(full_8['cesd_sc'] >= 3, 1, 0)
@@ -138,5 +150,4 @@ full_8['limit_ill'].value_counts(dropna=False)
 full_8.to_csv(derived_path / 'wave_8_cleaned.csv', index=False)
 
 ########## Inspection
-
-
+full_8['scinddt'].value_counts(dropna=False) # NAs mainly due to scint == -3
