@@ -67,11 +67,11 @@ pn.ggsave(pca_screeplot, filename='pca_screeplot.png', path=figure_path, dpi=300
 # Extract PCA scores
 pca_scores = pca_digital.transform(digital_8_scaled) | p(pd.DataFrame)
 digital_8['PC1'] = pca_scores.iloc[:, 0].values
-digital_8['PC1'].isna().sum()  # no NAs
+digital_8['PC1'].isna().sum() # no NAs
 
 # Merge PC1 scores with the main data
 full_8 = full_8.merge(digital_8[['idauniq', 'PC1']], on='idauniq', how='left')
-full_8['PC1'].isna().sum()  # no NAs
+full_8['PC1'].isna().sum()
 
 # Save data
 full_8.to_csv(derived_path / 'wave_8_pca.csv', index=False)
