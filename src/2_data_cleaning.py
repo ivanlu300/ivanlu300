@@ -4,150 +4,319 @@ from pathlib import Path
 from sspipe import p, px
 
 # Set up paths
-main_path = Path('1_sample_selection.py').resolve().parents[2] / 'Data' / 'elsa_main' / 'tab'
-covid_path = Path('1_sample_selection.py').resolve().parents[2] / 'Data' / 'elsa_covid' / 'tab'
-derived_path = Path('1_sample_selection.py').resolve().parents[2] / 'Data' / 'derived'
+main_path = Path('1_sample_selection.py').resolve().parents[2] / 'Data' / 'elsa_10' / 'tab'
+derived_path = Path('1_sample_selection.py').resolve().parents[2] / 'Data' / 'derived_10'
 
 # Read data
-full_8 = pd.read_csv(derived_path / 'wave_8.csv')
+main_10 = pd.read_csv(derived_path / 'wave_10_sample.csv')
 
 ########## Treatment
-full_8['hobb'].value_counts(dropna=False)
-full_8['internet_access'] = np.select(condlist=[full_8['hobb'] == 1, full_8['hobb'] == 2],
-                                      choicelist=[1, 0],
-                                      default=np.nan)
+main_10['HOBB'].value_counts(dropna=False)
+main_10['int_access'] = np.select(condlist=[main_10['HOBB'] == 1, main_10['HOBB'] == 2],
+                                  choicelist=[1, 0],
+                                  default=np.nan)  # 1 = yes, 0 = no
+main_10['int_access'].value_counts(dropna=False)
 
-full_8['scint'].value_counts(dropna=False)
-full_8['internet_freq'] = np.where(full_8['scint'] > 0, full_8['scint'], np.nan) # 1 = every day, 6 = never
+main_10['SCINT'].value_counts(dropna=False)
+main_10['int_freq'] = np.where(main_10['SCINT'] > 0, main_10['SCINT'], np.nan)  # 1 = every day, 6 = never
+main_10['int_freq'].value_counts(dropna=False)
 
-device_list = ['scinddt', 'scindlt', 'scindtb', 'scindph', 'scind95', 'scind96']
-device_list_no96 = ['scinddt', 'scindlt', 'scindtb', 'scindph', 'scind95']
-pd.crosstab(full_8['internet_freq'], full_8['scinddt'])
-# respondents with scint == 5|6 were not asked about devices (hence coded as -1), but I assume they have no device
-full_8[device_list_no96] = full_8[device_list_no96].where(full_8['scint'] < 5, other=0)
-pd.crosstab(full_8['internet_freq'], full_8['scind96'])
-full_8['scind96'] = full_8['scind96'].where(full_8['scint'] < 5, other=1)
+device_list = [f'SCIND0{number}' for number in range(1, 6)]
+pd.crosstab(main_10['SCINT'], main_10['SCIND01'])
+# respondents with SCINT == 6 were not asked about devices (hence coded as -1), but I assume they have no device
+main_10[device_list] = main_10[device_list].where(main_10['SCINT'] < 6, other=0)
 # then deal with NAs
-full_8[device_list] = full_8[device_list].where(full_8[device_list] >= 0, other=np.nan) # 1 = yes, 0 = no
+main_10[device_list] = main_10[device_list].where(main_10[device_list] >= 0, other=np.nan)  # 1 = yes, 0 = no
+pd.crosstab(main_10['int_freq'], main_10['SCIND01'])
 
-activity_list = ['scinaem', 'scinacl', 'scinaed', 'scinabk', 'scinash', 'scinasl', 'scinasn', 'scinact', 'scinanw', 'scinast', 'scinagm', 'scinajb', 'scinaps', 'scina95', 'scina96']
-activity_list_no96 = ['scinaem', 'scinacl', 'scinaed', 'scinabk', 'scinash', 'scinasl', 'scinasn', 'scinact', 'scinanw', 'scinast', 'scinagm', 'scinajb', 'scinaps', 'scina95']
-pd.crosstab(full_8['internet_freq'], full_8['scinaem'])
-# respondents with scint == 5|6 were not asked about activities (hence coded as -1), but I assume they have no activity
-full_8[activity_list_no96] = full_8[activity_list_no96].where(full_8['scint'] < 5, other=0)
-pd.crosstab(full_8['internet_freq'], full_8['scina96'])
-full_8['scina96'] = full_8['scina96'].where(full_8['scint'] < 5, other=1)
+activity_list = [f'SCINA0{number}' for number in range(1, 10)] + [f'SCINA{number}' for number in range(10, 22)]
+activity_list_no96 = [f'SCINA0{number}' for number in range(1, 10)] + [f'SCINA{number}' for number in range(10, 21)]
+pd.crosstab(main_10['SCINT'], main_10['SCINA01'])
+# respondents with SCINT == 6 were not asked about activities (hence coded as -1), but I assume they have no activity
+main_10[activity_list_no96] = main_10[activity_list_no96].where(main_10['SCINT'] < 6, other=0)
+pd.crosstab(main_10['SCINT'], main_10['SCINA21'])  # 21 is none
+main_10['SCINA21'] = main_10['SCINA21'].where(main_10['SCINT'] < 6, other=1)
 # then deal with NAs
-full_8[activity_list] = full_8[activity_list].where(full_8[activity_list] >= 0, other=np.nan) # 1 = yes, 0 = no
+main_10[activity_list] = main_10[activity_list].where(main_10[activity_list] >= 0, other=np.nan)  # 1 = yes, 0 = no
+pd.crosstab(main_10['int_freq'], main_10['SCINA21'])
+pd.crosstab(main_10['int_freq'], main_10['SCINA02'])
+
+########## Sample selection
+reason_list = [f'SCINNO0{number}' for number in range(1, 10)]
+main_10['SCINNO06'].value_counts(dropna=False)
+main_10[reason_list] = main_10[reason_list].where(main_10[reason_list] >= 0, other=np.nan)  # 1 = yes, 0 = no
+main_10['SCINNO05'].value_counts(dropna=False)
 
 # Outcome - self-reported health
-full_8['hehelf'].value_counts(dropna=False) # 1 = excellent, 5 = poor
+main_10['Hehelf'].value_counts(dropna=False)  # 1 = excellent, 5 = poor
+main_10['srh'] = np.where(main_10['Hehelf'] > 0, main_10['Hehelf'], np.nan)
+main_10['srh'].value_counts(dropna=False)
 
 # Outcome - cardiovascular diseases
-pd.crosstab(full_8['hedasbp'], full_8['hedimbp'])
-full_8['high_bp'] = np.select(condlist=[full_8['hedasbp'] == 1, full_8['hedimbp'] == 1, (full_8['hedasbp'].isin([-1, 2])) & (full_8['hedimbp'] == 0)],
-                              choicelist=[1, 1, 0],
-                              default=np.nan)
-full_8['high_bp'].value_counts(dropna=False)
-
-pd.crosstab(full_8['hedasch'], full_8['hedimch'])
-full_8['high_chol'] = np.select(condlist=[full_8['hedasch'] == 1, full_8['hedimch'] == 1, (full_8['hedasch'].isin([-1, 2])) & (full_8['hedimch'] == 0)],
-                                choicelist=[1, 1, 0],
-                                default=np.nan)
-full_8['high_chol'].value_counts(dropna=False)
-
-pd.crosstab(full_8['hedacdi'], full_8['hedimdi'])
-full_8['diabetes'] = np.select(condlist=[full_8['hedacdi'] == 1, full_8['hedimdi'] == 1, (full_8['hedacdi'].isin([-1, 2])) & (full_8['hedimdi'] == 0)],
-                               choicelist=[1, 1, 0],
+main_10['HEHaveBP'].value_counts(dropna=False)
+main_10['high_bp'] = np.select(condlist=[main_10['HEHaveBP'].isin([1, 2]), main_10['HEHaveBP'].isin([-1, 3])],
+                               choicelist=[1, 0],
                                default=np.nan)
-full_8['diabetes'].value_counts(dropna=False)
+main_10['high_bp'].value_counts(dropna=False)
 
-# Outcome - non-cardiovascular diseases
-pd.crosstab(full_8['hedbsas'], full_8['hedibas'])
-full_8['asthma'] = np.select(condlist=[full_8['hedbsas'] == 1, full_8['hedibas'] == 1, (full_8['hedbsas'].isin([-1, 2])) & (full_8['hedibas'] == 0)],
-                             choicelist=[1, 1, 0],
-                             default=np.nan)
-full_8['asthma'].value_counts(dropna=False)
+main_10['HEHaveHC'].value_counts(dropna=False)
+main_10['high_chol'] = np.select(condlist=[main_10['HEHaveHC'].isin([1, 2]), main_10['HEHaveHC'].isin([-1, 3])],
+                                 choicelist=[1, 0],
+                                 default=np.nan)
+main_10['high_chol'].value_counts(dropna=False)
 
-pd.crosstab(full_8['hedbsar'], full_8['hedibar'])
-full_8['arthritis'] = np.select(condlist=[full_8['hedbsar'] == 1, full_8['hedibar'] == 1, (full_8['hedbsar'].isin([-1, 2])) & (full_8['hedibar'] == 0)],
-                                choicelist=[1, 1, 0],
-                                default=np.nan)
-full_8['arthritis'].value_counts(dropna=False)
-
-pd.crosstab(full_8['hedbsca'], full_8['hedibca'])
-full_8['cancer'] = np.select(condlist=[full_8['hedbsca'] == 1, full_8['hedibca'] == 1, (full_8['hedbsca'].isin([-1, 2])) & (full_8['hedibca'] == 0)],
-                             choicelist=[1, 1, 0],
-                             default=np.nan)
-full_8['cancer'].value_counts(dropna=False)
-
-# Outcome - mental health
-# full_8['psceda'].value_counts(dropna=False)
-# cesd_list = [f'psced{chr(letter)}' for letter in range(ord('a'), ord('i'))]
-#
-# # reverse the score of positive items
-# full_8['pscedd'] = full_8['pscedd'].replace({1: 2, 2: 1}) # happy
-# full_8['pscedf'] = full_8['pscedf'].replace({1: 2, 2: 1}) # enjoy life
-#
-# full_8['cesd'] = np.select(condlist=[(full_8[cesd_list] == 1).sum(axis=1) >= 3, (full_8[cesd_list] < 0).any(axis=1)],
-#                            choicelist=[1, np.nan],
-#                            default=0)
-# full_8['cesd'].value_counts(dropna=False) # 658
-# # Confirmed: the 'cesd_sc' in the ifs derived dataset has already adjusted for the reverse score of positive items
-full_8['cesd_sc'].value_counts(dropna=False)
-full_8['cesd'] = np.where(full_8['cesd_sc'] >= 3, 1, 0)
-full_8['cesd'].value_counts(dropna=False)
-
-########## Controls
-# social class
-full_8['w8nssec8'].value_counts(dropna=False)
-full_8['social_class'] = np.where(full_8['w8nssec8'].isin([-3, 99]), np.nan, full_8['w8nssec8'])
-full_8['social_class'].value_counts(dropna=False) # 1 = high, 8 = low
-
-# income
-full_8['yq10_bu_s'].value_counts(dropna=False)
-full_8['income_d'] = full_8['yq10_bu_s'].apply(lambda x: int(x) if x.isdigit() else np.nan)
-full_8['income_d'].value_counts(dropna=False)
-
-full_8['totwq10_bu_s'].value_counts(dropna=False)
-full_8['wealth_d'] = full_8['totwq10_bu_s'].apply(lambda x: int(x) if x.isdigit() else np.nan)
-full_8['wealth_d'].value_counts(dropna=False)
-
-# age
-full_8['age'].value_counts(dropna=False)
-
-# sex
-full_8['sex'].value_counts(dropna=False) # 1 = male, 2 = female
-
-# ethnicity
-full_8['nonwhite'].value_counts(dropna=False) # 1 = non-white, 0 = white
-full_8['nonwhite'].mean() # 98% white
-
-# marital status
-full_8['marstat'].value_counts(dropna=False) # 1-6 categories
-full_8['marstat'] = full_8['marstat'].astype(str)
-
-# educational attainment
-full_8['qual3'].value_counts(dropna=False) # NAs present
-full_8['education'] = np.where(full_8['qual3'] >= 0, full_8['qual3'], np.nan) # 0 = low, 2 = high
-full_8['education'].value_counts(dropna=False)
-
-# deprivation
-full_8['ndepriv'].value_counts(dropna=False) # 1 = least deprived, 5 = most deprived
-full_8['deprive'] = np.select(condlist=[full_8['ndepriv'] == -1, full_8['ndepriv'] < 0],
-                              choicelist=[0, np.nan],
-                              default=full_8['ndepriv']) # 0 = least deprived, 9 = most deprived
-full_8['deprive'].value_counts(dropna=False)
-
-# long-standing illness
-full_8['llsill'].value_counts(dropna=False)
-full_8['limit_ill'] = np.select(condlist=[full_8['llsill'] == 2, full_8['llsill'].isin([0, 1])],
+main_10['HEEverDI'].value_counts(dropna=False)
+main_10['diabetes'] = np.select(condlist=[main_10['HEEverDI'] == 1, main_10['HEEverDI'] == 2],
                                 choicelist=[1, 0],
                                 default=np.nan)
-full_8['limit_ill'].value_counts(dropna=False)
+main_10['diabetes'].value_counts(dropna=False)
+
+# Outcome - non-cardiovascular diseases
+main_10['HEHaveAS'].value_counts(dropna=False)
+main_10['asthma'] = np.select(condlist=[main_10['HEHaveAS'].isin([1, 2]), main_10['HEHaveAS'].isin([-1, 3])],
+                              choicelist=[1, 0],
+                              default=np.nan)
+main_10['asthma'].value_counts(dropna=False)
+
+main_10['HEHaveAR'].value_counts(dropna=False)
+main_10['arthritis'] = np.select(condlist=[main_10['HEHaveAR'].isin([1, 2]), main_10['HEHaveAR'].isin([-1, 3])],
+                                 choicelist=[1, 0],
+                                 default=np.nan)
+main_10['arthritis'].value_counts(dropna=False)
+
+main_10['HEHaveCA'].value_counts(dropna=False)
+main_10['cancer'] = np.select(condlist=[main_10['HEHaveCA'].isin([1, 2]), main_10['HEHaveCA'].isin([-1, 3])],
+                              choicelist=[1, 0],
+                              default=np.nan)
+main_10['cancer'].value_counts(dropna=False)
+
+# Outcome - mental health
+main_10['PScedA'].value_counts(dropna=False)
+cesd_list = [f'PSced{chr(letter)}' for letter in range(ord('A'), ord('I'))]
+
+# reverse the score of positive items
+main_10['PScedD'] = main_10['PScedD'].replace({1: 2, 2: 1})  # happy
+main_10['PScedF'] = main_10['PScedF'].replace({1: 2, 2: 1})  # enjoy life
+
+main_10['cesd'] = np.where((main_10[cesd_list] < 0).all(axis=1), np.nan, (main_10[cesd_list] == 1).sum(axis=1))
+main_10['cesd'].value_counts(dropna=False)  # 0 = lowest, 8 = highest
+
+main_10['cesd_b'] = np.select(condlist=[((main_10[cesd_list] == 1).sum(axis=1)) >= 3,
+                                        (main_10[cesd_list] < 0).all(axis=1)],
+                              choicelist=[1, np.nan],
+                              default=0)  # 1 = yes, 0 = no
+main_10['cesd_b'].value_counts(dropna=False)
+
+########## Controls
+### income
+# annuity
+main_10['IaAIm'].value_counts(dropna=False)
+main_10['annuity'] = np.select(condlist=[main_10['IaAIm'] == -1, main_10['IaAIm'] >= 0],
+                               choicelist=[0, main_10['IaAIm']],
+                               default=np.nan)
+main_10['annuity'].value_counts(dropna=False)
+
+main_10['IaAIp'].value_counts(dropna=False)
+main_10['annuity_s'] = np.select(condlist=[main_10['IaAIp'] == -1, main_10['IaAIp'] >= 0],
+                                 choicelist=[0, main_10['IaAIp']],
+                                 default=np.nan)
+main_10['annuity_s'].value_counts(dropna=False)
+
+# private pension
+main_10['IaPPei'].value_counts(dropna=False)
+main_10['p_pension'] = np.select(condlist=[main_10['IaPPei'] == -1, main_10['IaPPei'] >= 0],
+                                 choicelist=[0, main_10['IaPPei']],
+                                 default=np.nan)
+main_10['p_pension'].value_counts(dropna=False)
+
+# write a function to facilitate period and amount
+def period_amount(period, amount):
+    return np.select(condlist=[main_10[period] == -1,
+                               main_10[amount] == -1,
+                               main_10[amount].isin([-8, -9]),
+                               main_10[period] == 1,
+                               main_10[period] == 2,
+                               main_10[period] == 3,
+                               main_10[period] == 4,
+                               main_10[period] == 5,
+                               main_10[period] == 7,
+                               main_10[period] == 8,
+                               main_10[period] == 9,
+                               main_10[period] == 10,
+                               main_10[period] == 13,
+                               main_10[period] == 26,
+                               main_10[period] == 52,
+                               main_10[period] == 90],
+                     choicelist=[0,
+                                 0,
+                                 np.nan,
+                                 main_10[amount] * 52,
+                                 main_10[amount] * (52/2),
+                                 main_10[amount] * (52/3),
+                                 main_10[amount] * (52/4),
+                                 main_10[amount] * 12,
+                                 main_10[amount] * (12/2),
+                                 main_10[amount] * 8,
+                                 main_10[amount] * 9,
+                                 main_10[amount] * 10,
+                                 main_10[amount] * 4,
+                                 main_10[amount] * 2,
+                                 main_10[amount],
+                                 main_10[amount] * 52],
+                     default=np.nan)
+
+# state pension
+main_10['IasPa'].value_counts(dropna=False)
+main_10['IaPAM'].value_counts(dropna=False)
+main_10['s_pension'] = period_amount(period='IasPa', amount='IaPAM')
+main_10['s_pension'].value_counts(dropna=False)
+main_10['s_pension_s'] = period_amount('IaSPp', 'IaPPAm')
+main_10['s_pension_s'].value_counts(dropna=False)
+
+# state benefits
+benefit_period_list = ['IaP'] + [f'IaP{number}' for number in range(2, 43)]
+benefit_amount_list = ['IaA'] + [f'IaA{number}' for number in range(2, 43)]
+pd.crosstab(main_10['IaP12'], main_10['IaA12'])
+for i in range(1, 43):
+    main_10[f's_benefit_{i}'] = period_amount(period=benefit_period_list[i-1], amount=benefit_amount_list[i-1])
+main_10['s_benefit_12'].value_counts(dropna=False)
+
+# asset income
+main_10['IaSint'].value_counts(dropna=False)
+main_10['interest_savings'] = np.select(condlist=[main_10['IaSint'] == -1, main_10['IaSint'] >= 0],
+                                        choicelist=[0, main_10['IaSint']],
+                                        default=np.nan)
+main_10['interest_savings'].value_counts(dropna=False)
+
+main_10['IaNSi'].value_counts(dropna=False)
+main_10['interest_national'] = np.select(condlist=[main_10['IaNSi'] == -1, main_10['IaNSi'] >= 0],
+                                         choicelist=[0, main_10['IaNSi']],
+                                         default=np.nan)
+main_10['interest_national'].value_counts(dropna=False)
+
+main_10['IaNPBP'].value_counts(dropna=False)
+main_10['interest_premium'] = np.select(condlist=[main_10['IaNPBP'] == -1, main_10['IaNPBP'] >= 0],
+                                        choicelist=[0, main_10['IaNPBP']],
+                                        default=np.nan)
+main_10['interest_premium'].value_counts(dropna=False)
+
+main_10['IaIsaD'].value_counts(dropna=False)
+main_10['interest_isa'] = np.select(condlist=[main_10['IaIsaD'] == -1, main_10['IaIsaD'] >= 0],
+                                   choicelist=[0, main_10['IaIsaD']],
+                                   default=np.nan)
+main_10['interest_isa'].value_counts(dropna=False)
+
+main_10['IaSSSi'].value_counts(dropna=False)
+main_10['interest_share'] = np.select(condlist=[main_10['IaSSSi'] == -1, main_10['IaSSSi'] >= 0],
+                                      choicelist=[0, main_10['IaSSSi']],
+                                      default=np.nan)
+main_10['interest_share'].value_counts(dropna=False)
+
+main_10['Iauiti'].value_counts(dropna=False)
+main_10['interest_trust'] = np.select(condlist=[main_10['Iauiti'] == -1, main_10['Iauiti'] >= 0],
+                                      choicelist=[0, main_10['Iauiti']],
+                                      default=np.nan)
+main_10['interest_trust'].value_counts(dropna=False)
+
+main_10['Iabgi'].value_counts(dropna=False)
+main_10['interest_bond'] = np.select(condlist=[main_10['Iabgi'] == -1, main_10['Iabgi'] >= 0],
+                                     choicelist=[0, main_10['Iabgi']],
+                                     default=np.nan)
+main_10['interest_bond'].value_counts(dropna=False)
+
+main_10['Iaira'].value_counts(dropna=False)
+main_10['interest_rent'] = np.select(condlist=[main_10['Iaira'] == -1, main_10['Iaira'] >= 0],
+                                     choicelist=[0, main_10['Iaira']],
+                                     default=np.nan)
+main_10['interest_rent'].value_counts(dropna=False)
+
+main_10['IafBA'].value_counts(dropna=False)
+main_10['interest_farm'] = np.select(condlist=[main_10['IafBA'] == -1, main_10['IafBA'] >= 0],
+                                     choicelist=[0, main_10['IafBA']],
+                                     default=np.nan)
+main_10['interest_farm'].value_counts(dropna=False)
+
+# other income
+main_10['IaSiOi'].value_counts(dropna=False)
+main_10['income_other'] = np.select(condlist=[main_10['IaSiOi'] == -1, main_10['IaSiOi'] >= 0],
+                                    choicelist=[0, main_10['IaSiOi']],
+                                    default=np.nan)
+main_10['income_other'].value_counts(dropna=False)
+
+# total annual income
+benefit_cols = [f's_benefit_{i}' for i in range(1, 43)]
+interest_cols = ['interest_savings', 'interest_national', 'interest_premium', 'interest_isa', 'interest_share',
+                 'interest_trust', 'interest_bond', 'interest_rent', 'interest_farm', 'income_other']
+
+main_10['total_income_bu'] = main_10[['annuity', 'annuity_s', 'p_pension', 's_pension', 's_pension_s']].sum(axis=1, min_count=3) + \
+                             main_10[benefit_cols].sum(axis=1, min_count=21) + \
+                             main_10[interest_cols].sum(axis=1, min_count=5)
+main_10['total_income_bu'].value_counts(dropna=False)
+
+# age
+main_10['indager'].value_counts(dropna=False)
+main_10['age'] = np.where(main_10['indager'] == -7, 99, main_10['indager'])
+main_10['age'].value_counts(dropna=False)
+
+# sex
+main_10['indsex'].value_counts(dropna=False)  # 1 = male, 2 = female
+main_10['sex'] = np.where(main_10['indsex'] == 1, 0, 1)  # 0 = male, 1 = female
+main_10['sex'].value_counts(dropna=False)
+
+# ethnicity
+pd.crosstab(main_10['fqethnmr'], main_10['nonwhite'], dropna=False)
+main_10['ethnicity'] = np.select(condlist=[main_10['fqethnmr'] == 1,
+                                           main_10['fqethnmr'] == 2,
+                                           (main_10['fqethnmr'] == -1) & (main_10['nonwhite'] == 0),
+                                           (main_10['fqethnmr'] == -1) & (main_10['nonwhite'] == 1)],
+                                 choicelist=[0, 1, 0, 1],
+                                 default=np.nan)  # 0 = white, 1 = non-white
+main_10['ethnicity'].value_counts(dropna=False)
+
+# marital status
+main_10['dimarr'].value_counts(dropna=False)  # 1-6 categories
+main_10['marital_status'] = main_10['dimarr'].astype(str)
+
+# educational attainment
+# age finished education
+pd.crosstab(main_10['fqendm'], main_10['edend'], dropna=False)
+main_10['fqendm'].value_counts(dropna=False)
+main_10['edend'].value_counts(dropna=False)
+main_10['edu_age'] = np.select(condlist=[main_10['fqendm'] > 0, main_10['fqendm'] == -1],
+                               choicelist=[main_10['fqendm'], main_10['edend']],
+                               default=np.nan)
+main_10['edu_age'].value_counts(dropna=False)  # 451 NAs possibly because there are new respondents
+
+main_10['edqual'].value_counts(dropna=False)
+main_10['FqMqua'].value_counts(dropna=False)
+main_10['fqqumnv5'].value_counts(dropna=False)
+
+main_10['edu_qual'] = np.select(condlist=[main_10['fqqumnv5'] == 1,
+                                          main_10['fqqumnv4'] == 1,
+                                          main_10['fqqumnv3'] == 1,
+                                          main_10['fqqumnv2'] == 1,
+                                          main_10['fqqumnv1'] == 1,
+                                          main_10['edqual'] < 0],
+                                choicelist=[1, 1, 3, 4, 5, np.nan],
+                                default=main_10['edqual'])
+main_10['edu_qual'].value_counts(dropna=False) # 541 NAs possibly because there are new respondents
+
+# deprivation
+deprive_list = ['exrelefo', 'exreleme', 'exreleou', 'exrelede', 'exreleel', 'exrelefa', 'exrelepr', 'exreleho', 'exreletr']
+main_10['EXRela'].value_counts(dropna=False)
+
+pd.crosstab(main_10['EXRela'], main_10['exrelefo'], dropna=False)
+# respondents with EXRela == 1 were not asked about deprivation (hence coded as -1), but I assume they are not deprived
+main_10[deprive_list] = main_10[deprive_list].where(main_10['EXRela'] != 1, other=0)
+
+# remove NAs
+main_10[deprive_list] = main_10[deprive_list].where(main_10[deprive_list] >= 0, other=np.nan)
+
+# count the number of deprived items
+main_10['n_deprived'] = main_10[deprive_list].sum(axis=1, min_count=1)  # 0 = least deprived, 9 = most deprived
+main_10['n_deprived'].value_counts(dropna=False)
 
 ########## Save data
-full_8.to_csv(derived_path / 'wave_8_cleaned.csv', index=False)
+main_10.to_csv(derived_path / 'wave_10_cleaned.csv', index=False)
 
 ########## Inspection
-full_8['scinddt'].value_counts(dropna=False) # NAs mainly due to scint == -3
