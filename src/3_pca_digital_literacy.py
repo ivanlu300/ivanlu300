@@ -42,7 +42,7 @@ pc1_loadings = pd.DataFrame({'Variable': ['Frequency of using the internet',
                                           'desktop', 'laptop', 'tablet', 'smartphone', 'other',
                                           'emails', 'video calls', 'finding information', 'finances', 'shopping', 'selling', 'social networking', 'news', 'TV/radio', 'music', 'games', 'e-books', 'job application', 'government services', 'checking travel times', 'satellite navigation', 'buying public transport tickets', 'booking a taxi', 'finding local amenities', 'controlling household appliances', 'none of the above'],
                              'Loading': pca_loadings.iloc[0, :] | p(round, 3),
-                             'Description': (['1 = every day, 6 = never'] + ['1 = yes, 0 = no'] * (pca_loadings.shape[1] - 1))})
+                             'Description': np.nan})
 
 pc1_loadings.to_latex(index=False, float_format="%.3f") | p(print)
 
