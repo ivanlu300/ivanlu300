@@ -44,7 +44,7 @@ pc1_loadings = pd.DataFrame({'Variable': ['Frequency of using the internet',
                              'Loading': pca_loadings.iloc[0, :] | p(round, 3),
                              'Description': (['1 = every day, 6 = never'] + ['1 = yes, 0 = no'] * (pca_loadings.shape[1] - 1))})
 
-pc1_loadings.to_latex(float_format="%.3f") | p(print)
+pc1_loadings.to_latex(index=False, float_format="%.3f") | p(print)
 
 # Explained variance (proportion)
 pca_pve = pd.DataFrame({'PC': range(1, digital_10_scaled.shape[1] + 1),
