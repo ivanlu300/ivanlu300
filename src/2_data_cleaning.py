@@ -253,6 +253,10 @@ main_10['total_income_bu'] = main_10[['annuity', 'annuity_s', 'p_pension', 's_pe
                              main_10[interest_cols].sum(axis=1, min_count=5)
 main_10['total_income_bu'].value_counts(dropna=False)
 
+# deciles
+main_10['total_income_bu_d'] = pd.qcut(main_10['total_income_bu'], q=10, labels=False)
+main_10['total_income_bu_d'].value_counts(dropna=False)
+
 # age
 main_10['indager'].value_counts(dropna=False)
 main_10['age'] = np.where(main_10['indager'] == -7, 99, main_10['indager'])
