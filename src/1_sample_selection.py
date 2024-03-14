@@ -36,7 +36,7 @@ ifs_9 = pd.read_table(main_path / 'wave_9_ifs_derived_variables.tab',
 main_10 = main_10.merge(ifs_9, on='idauniq', how='left')
 
 ########## Sample selection
-main_10['W10scout'].value_counts(dropna=False)  # remove respondents (-1193)
+main_10['W10scout'].value_counts(dropna=False)  # remove respondents who did not receive or were not eligible for self-completion questionnaire (-1193)
 main_10 = main_10.loc[main_10['W10scout'] == 1, :]
 
 main_10['askinst'].value_counts(dropna=False)  # remove respondents in institution (-6)
