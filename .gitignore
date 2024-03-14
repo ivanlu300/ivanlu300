@@ -1,3 +1,4 @@
 .idea/
 .DS_Store
 src/0_prelim_attempt.py
+*.pdf
