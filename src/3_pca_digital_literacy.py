@@ -38,7 +38,7 @@ pca_digital.fit(digital_10_scaled)
 pca_loadings = pd.DataFrame(pca_digital.components_)  # each row is a principal component, and columns are corresponding variable loadings
 
 ########## PC1 loadings
-pc1_loadings = pd.DataFrame({'Variable': ['Frequency of using the internet',
+pc1_loadings = pd.DataFrame({'Variable': ['Frequency of using the Internet',
                                           'desktop', 'laptop', 'tablet', 'smartphone', 'other',
                                           'emails', 'video calls', 'finding information', 'finances', 'shopping', 'selling', 'social networking', 'news', 'TV/radio', 'music', 'games', 'e-books', 'job application', 'government services', 'checking travel times', 'satellite navigation', 'buying public transport tickets', 'booking a taxi', 'finding local amenities', 'controlling household appliances', 'none of the above'],
                              'Loading': pca_loadings.iloc[0, :] | p(round, 3),
