@@ -82,7 +82,7 @@ sample_literacy['iptw_literacy_s'] = np.select(condlist=[sample_literacy['PC1_b'
 ########## Write a for loop to save data
 outcome_list = ['srh', 'high_bp', 'high_chol', 'diabetes', 'asthma', 'arthritis', 'cancer', 'cesd', 'cesd_b']
 table_ate = pd.DataFrame({'Outcome': ['Self-reported health', '', 'High blood pressure', '', 'High cholesterol', '',
-                                      'Diabetes', '', 'Asthma', '', 'Arthritis', '', 'Cancer', '', 'CES-D', '',
+                                      'Diabetes', '', 'Asthma', '', 'Arthritis', '', 'Cancer', '', 'CES-D items', '',
                                       'CES-D diagnosis', ''],
                           'Internet access': np.nan,
                           'Digital literacy': np.nan,
