@@ -4,8 +4,8 @@ from pathlib import Path
 from sspipe import p, px
 
 # Set up paths
-main_path = Path('1_sample_selection.py').resolve().parents[2] / 'Data' / 'elsa_10' / 'tab'
-derived_path = Path('1_sample_selection.py').resolve().parents[2] / 'Data' / 'derived_10'
+main_path = Path('1_sample_selection.py').resolve().parents[3] / 'Data' / 'elsa_10' / 'tab'
+derived_path = Path('1_sample_selection.py').resolve().parents[3] / 'Data' / 'derived_10'
 
 # Read data
 main_var = ['idauniq', 'W10scout',

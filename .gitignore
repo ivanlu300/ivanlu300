@@ -1,5 +1,5 @@
 .idea/
 .DS_Store
 *.pdf
-src/01_prelim_attempt.py
-src/07_prelim_attempt.py
+src/question_1/0_prelim_attempt.py
+src/question_2/0_prelim_attempt.py
