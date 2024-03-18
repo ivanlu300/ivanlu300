@@ -1,4 +1,5 @@
 .idea/
 .DS_Store
-src/0_prelim_attempt.py
 *.pdf
+src/01_prelim_attempt.py
+src/07_prelim_attempt.py
