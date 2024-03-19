@@ -14,7 +14,7 @@ figure_path = Path('1_sample_selection.py').resolve().parents[2] / 'output' / 'f
 table_path = Path('1_sample_selection.py').resolve().parents[2] / 'output' / 'table'
 
 # Read data
-main_10 = pd.read_csv(derived_path / 'wave_10_cleaned.csv')
+main_10 = pd.read_csv(derived_path / 'wave_10_cleaned_edu.csv')
 
 # Select variables related to digital literacy
 digital_var = ['idauniq',
@@ -84,6 +84,6 @@ main_10['PC1_b'] = np.select(condlist=[main_10['PC1'] < np.nanmean(main_10['PC1'
 main_10['PC1_b'].value_counts(dropna=False)
 
 # Save data
-main_10.to_csv(derived_path / 'wave_10_pca.csv', index=False)
+main_10.to_csv(derived_path / 'wave_10_pca_edu.csv', index=False)
 
 ########## Inspection

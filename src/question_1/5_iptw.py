@@ -12,7 +12,7 @@ figure_path = Path('1_sample_selection.py').resolve().parents[2] / 'output' / 'f
 table_path = Path('1_sample_selection.py').resolve().parents[2] / 'output' / 'table'
 
 # Read data
-main_10 = pd.read_csv(derived_path / 'wave_10_pca.csv')
+main_10 = pd.read_csv(derived_path / 'wave_10_pca_edu.csv')
 
 # Remove reverse causality
 main_10['SCINNO05'].value_counts(dropna=False)  # NAs due to refused
@@ -24,7 +24,7 @@ sample = main_10.loc[(main_10['SCINNO05'] != 1) & (main_10['SCINNO06'] != 1), :]
 # Drop NAs
 sample_access = sample.dropna(
     subset=['int_access', 'total_income_bu_d', 'age', 'sex', 'ethnicity', 'edu_age', 'edu_qual', 'n_deprived'])
-sample_access['int_access'].value_counts(dropna=False)  # 1: 2746, 0: 206 (N = 2952)
+sample_access['int_access'].value_counts(dropna=False)  # 1: 2537, 0: 185 (N = 2722)
 
 # logit model
 logit_access = smf.logit('int_access ~ total_income_bu_d + age + sex + ethnicity + edu_age + edu_qual + n_deprived',
@@ -56,7 +56,7 @@ sample_access['iptw_access_s'] = np.select(condlist=[sample_access['int_access']
 # Drop NAs
 sample_literacy = sample.dropna(
     subset=['PC1_b', 'total_income_bu_d', 'age', 'sex', 'ethnicity', 'edu_age', 'edu_qual', 'n_deprived'])
-sample_literacy['PC1_b'].value_counts(dropna=False)  # 1: 1654, 0: 1264 (N = 2918)
+sample_literacy['PC1_b'].value_counts(dropna=False)  # 1: 1562, 0: 1132 (N = 2694)
 
 # logit model
 logit_literacy = smf.logit('PC1_b ~ total_income_bu_d + age + sex + ethnicity + edu_age + edu_qual + n_deprived',
@@ -120,7 +120,10 @@ for i in np.arange(0, literacy_ate.shape[0], 2):
 literacy_ate['Digital literacy'] = literacy_ate['Digital literacy'].astype(str)
 literacy_ate.loc[literacy_ate.index % 2 == 1, 'Digital literacy'] = '[' + literacy_ate['Digital literacy'] + ']'
 
-literacy_ate[['Outcome', 'Digital literacy']].to_latex(index=False, float_format="%.3f") | p(print)
+# Add a description column
+literacy_ate['Description'] = [''] * literacy_ate.shape[0]
+
+literacy_ate[['Outcome', 'Description', 'Digital literacy']].to_latex(index=False, float_format="%.3f") | p(print)
 
 ########## Inspection
 sample_literacy['cesd'].value_counts(dropna=False)

@@ -285,10 +285,11 @@ main_10['marital_status'] = main_10['dimarr'].astype(str)
 # age finished education
 pd.crosstab(main_10['fqendm'], main_10['edend'], dropna=False)
 main_10['fqendm'].value_counts(dropna=False)
-main_10['edend'].value_counts(dropna=False)
+main_10['edend'].value_counts(dropna=False)  # edend == 1 means the respondent has not finished education
 main_10['edu_age'] = np.select(condlist=[main_10['fqendm'] > 0, main_10['fqendm'] == -1],
                                choicelist=[main_10['fqendm'], main_10['edend']],
                                default=np.nan)
+main_10['edu_age'] = np.where(main_10['edu_age'] == 1, np.nan, main_10['edu_age'])
 main_10['edu_age'].value_counts(dropna=False)  # 451 NAs possibly because there are new respondents
 
 main_10['edqual'].value_counts(dropna=False)
@@ -303,6 +304,7 @@ main_10['edu_qual'] = np.select(condlist=[main_10['fqqumnv5'] == 1,
                                           main_10['edqual'] < 0],
                                 choicelist=[1, 1, 3, 4, 5, np.nan],
                                 default=main_10['edqual'])
+main_10['edu_qual'] = np.where(main_10['edu_qual'] == 6, np.nan, main_10['edu_qual'])  # edqual == 6 means foreign
 main_10['edu_qual'].value_counts(dropna=False) # 541 NAs possibly because there are new respondents
 
 # deprivation
@@ -321,6 +323,6 @@ main_10['n_deprived'] = main_10[deprive_list].sum(axis=1, min_count=1)  # 0 = le
 main_10['n_deprived'].value_counts(dropna=False)
 
 ########## Save data
-main_10.to_csv(derived_path / 'wave_10_cleaned.csv', index=False)
+main_10.to_csv(derived_path / 'wave_10_cleaned_edu.csv', index=False)
 
 ########## Inspection
