@@ -1,0 +1,47 @@
+%! Author = ivanlu
+%! Date = 2024/3/11
+
+% Preamble
+\documentclass[12pt]{article}
+
+% Packages
+\usepackage{amsmath}
+\usepackage{booktabs}
+\usepackage{rotating}
+
+% Document
+\begin{document}
+
+    \begin{sidewaystable}[h!]
+        \centering
+        \caption{Descriptive statistics}
+        \label{tab:desc_stats_q1}
+        \begin{tabular}{llcc}
+            \toprule
+            Variables & Description & \multicolumn{2}{c}{Treatment: digital literacy} \\
+            & & Low & High \\
+            \midrule
+            \textbf{Outcomes} & & & \\
+            Self-reported health & 1 = excellent, 5 = poor & 3.005 & 2.538 \\
+            High blood pressure & 1 = yes, 0 = no & 0.502 & 0.394 \\
+            High cholesterol &  & 0.482 & 0.407 \\
+            Diabetes &  & 0.154 & 0.100 \\
+            Asthma &  & 0.113 & 0.102 \\
+            Arthritis &  & 0.481 & 0.403 \\
+            Cancer &  & 0.055 & 0.034 \\
+            CES-D items & 0 = no symptom, 8 = all symptoms & 1.508 & 1.029 \\
+            CES-D diagnosis & 1 = yes, 0 = no & 0.221 & 0.122 \\
+            & & & \\
+            \textbf{Controls} & & & \\
+            Decile of total income & 0 = 1st decile, 9 = 10th decile & 4.302 & 4.643 \\
+            Age &  & 76.624 & 70.363 \\
+            Sex & 0 = male, 1 = female & 0.585 & 0.513 \\
+            Ethnicity & 0 = white, 1 = non-white & 0.036 & 0.024 \\
+            Age left education & 1 = never went to school, 8 = 19 or over & 5.065 & 6.193 \\
+            Highest qualification & 1 = degree or equivalent, 7 = no qualification & 4.082 & 2.603 \\
+            Deprivation index & 0 = least deprived, 9 = most deprived & 0.328 & 0.230 \\
+            \bottomrule
+        \end{tabular}
+    \end{sidewaystable}
+
+\end{document}
