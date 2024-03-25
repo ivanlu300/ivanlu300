@@ -63,6 +63,7 @@ pca_screeplot = (pn.ggplot(pca_pve, pn.aes(x='PC', y='PVE'))
                  + pn.geom_line()
                  + pn.theme_bw()
                  + pn.scale_x_continuous(breaks=range(1, digital_10_scaled.shape[1] + 1))
+                 + pn.scale_y_continuous(limits=(0, 0.3))
                  + pn.labs(x='Principal component', y='Proportion of variance explained'))
 
 pn.ggsave(pca_screeplot, filename='pca_screeplot.png', path=figure_path, dpi=300)

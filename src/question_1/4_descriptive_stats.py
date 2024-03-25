@@ -13,14 +13,21 @@ table_path = Path('1_sample_selection.py').resolve().parents[2] / 'output' / 'ta
 main_10 = pd.read_csv(derived_path / 'wave_10_pca.csv')
 
 # Treatment
-main_10['PC1_b'].value_counts(dropna=False)  # 1: 2088, 0: 1454, NaN: 54
+main_10['PC1_b'].value_counts(dropna=False)  # 1: 2311, 0: 1664, NaN: 42
 
-# Descriptive variables
+# Descriptive statistics
 desc_vars = ['srh', 'high_bp', 'high_chol', 'diabetes', 'asthma', 'arthritis', 'cancer', 'cesd', 'cesd_b',
-             'total_income_bu_d', 'age', 'sex', 'ethnicity', 'edu_age', 'edu_qual', 'n_deprived']
+             'age', 'sex', 'ethnicity', 'edu_age', 'employ_status', 'total_income_bu_d', 'n_deprived', 'memory', 'numeracy', 'comprehension']
 
-# descriptive statistics by treatment status
+# descriptive statistics by treatment status for non-categorical variables
 desc_df = main_10.groupby('PC1_b')[desc_vars].mean().round(3).T
+
+# descriptive statistics by treatment status for categorical variables
+marital_status_df = main_10.groupby('PC1_b')['marital_status'].value_counts(normalize=True).unstack().T
+edu_qual_df = main_10.groupby('PC1_b')['edu_qual'].value_counts(normalize=True).unstack().T
+
+# concatenate all dataframes
+desc_df = pd.concat([desc_df, marital_status_df, edu_qual_df])
 
 # rename columns
 desc_df.rename(columns={1: 'High', 0: 'Low'}, inplace=True)
@@ -35,13 +42,29 @@ desc_df.rename(index={'srh': 'Self-reported health',
                       'cancer': 'Cancer',
                       'cesd': 'CES-D items',
                       'cesd_b': 'CES-D diagnosis',
-                      'total_income_bu_d': 'Decile of total income',
                       'age': 'Age',
                       'sex': 'Sex',
                       'ethnicity': 'Ethnicity',
+                      1: 'Single',
+                      2: 'Married',
+                      3: 'Remarried',
+                      4: 'Separated',
+                      5: 'Divorced',
+                      6: 'Widowed',
                       'edu_age': 'Age left full-time education',
-                      'edu_qual': 'Highest educational qualification',
-                      'n_deprived': 'Deprivation index'},
+                      '1.0': 'Degree or equivalent',
+                      '2.0': 'HE below degree',
+                      '3.0': 'A-level or equivalent',
+                      '4.0': 'O-level or equivalent',
+                      '5.0': 'CSE or equivalent',
+                      '6.0': 'Foreign/other qualification',
+                      7.0: 'No qualification',
+                      'employ_status': 'Employment status',
+                      'total_income_bu_d': 'Decile of total income',
+                      'n_deprived': 'Deprivation index',
+                      'memory': 'Memory',
+                      'numeracy': 'Numeracy',
+                      'comprehension': 'Comprehension'},
                inplace=True)
 
 # Add description
@@ -54,9 +77,3 @@ desc_df = desc_df[['Description', 'Low', 'High']]
 desc_df.to_latex(index=True, float_format="%.3f") | p(print)
 
 ########## Inspection
-main_10['total_income_bu_d'].value_counts(dropna=False)
-main_10['n_deprived'].value_counts(dropna=False)
-main_10['edu_age'].value_counts(dropna=False)
-pd.crosstab(main_10['fqendm'], main_10['edu_age'], dropna=False)
-pd.crosstab(main_10['edend'], main_10['edu_age'], dropna=False)
-pd.crosstab(main_10['edend'], main_10['fqendm'], dropna=False)
