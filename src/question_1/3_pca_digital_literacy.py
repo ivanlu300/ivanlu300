@@ -14,7 +14,7 @@ figure_path = Path('1_sample_selection.py').resolve().parents[2] / 'output' / 'f
 table_path = Path('1_sample_selection.py').resolve().parents[2] / 'output' / 'table'
 
 # Read data
-main_10 = pd.read_csv(derived_path / 'wave_10_cleaned_edu.csv')
+main_10 = pd.read_csv(derived_path / 'wave_10_cleaned.csv')
 
 # Select variables related to digital literacy
 digital_var = ['idauniq',
@@ -24,7 +24,7 @@ digital_var = ['idauniq',
 
 # Remove NAs
 main_10['idauniq'].isna().sum()  # no NAs in idauniq
-digital_10 = main_10[digital_var].dropna()  # 54 dropped
+digital_10 = main_10[digital_var].dropna()  # N = 3975
 
 # Scale the variables before performing PCA
 scaler = StandardScaler(with_std=True, with_mean=True)
@@ -84,6 +84,6 @@ main_10['PC1_b'] = np.select(condlist=[main_10['PC1'] < np.nanmean(main_10['PC1'
 main_10['PC1_b'].value_counts(dropna=False)
 
 # Save data
-main_10.to_csv(derived_path / 'wave_10_pca_edu.csv', index=False)
+main_10.to_csv(derived_path / 'wave_10_pca.csv', index=False)
 
 ########## Inspection

@@ -12,7 +12,7 @@ figure_path = Path('1_sample_selection.py').resolve().parents[2] / 'output' / 'f
 table_path = Path('1_sample_selection.py').resolve().parents[2] / 'output' / 'table'
 
 # Read data
-main_10 = pd.read_csv(derived_path / 'wave_10_pca_edu.csv')
+main_10 = pd.read_csv(derived_path / 'wave_10_pca.csv')
 
 # Remove reverse causality
 main_10['SCINNO05'].value_counts(dropna=False)  # NAs due to refused
@@ -20,46 +20,13 @@ main_10['SCINNO06'].value_counts(dropna=False)
 
 sample = main_10.loc[(main_10['SCINNO05'] != 1) & (main_10['SCINNO06'] != 1), :]
 
-########## Treatment 1: internet access
+########## Treatment: digital literacy
 # Drop NAs
-sample_access = sample.dropna(
-    subset=['int_access', 'total_income_bu_d', 'age', 'sex', 'ethnicity', 'edu_age', 'edu_qual', 'n_deprived'])
-sample_access['int_access'].value_counts(dropna=False)  # 1: 2537, 0: 185 (N = 2722)
+sample_literacy = sample.dropna(subset=['PC1_b', 'total_income_bu_d', 'age', 'sex', 'ethnicity', 'edu_age', 'edu_qual', 'n_deprived', 'employ_status', 'marital_status'])
+sample_literacy['PC1_b'].value_counts(dropna=False)  # 1: 2186, 0: 1538
 
 # logit model
-logit_access = smf.logit('int_access ~ total_income_bu_d + age + sex + ethnicity + edu_age + edu_qual + n_deprived',
-                         data=sample_access).fit()
-logit_access.summary()
-
-sample_access['ps_access'] = logit_access.predict(sample_access)
-(pn.ggplot(sample, pn.aes(x='ps_access')) +
- pn.geom_histogram(bins=30) +
- pn.theme_bw())
-
-# IPTW
-sample_access['iptw_access'] = np.select(condlist=[sample_access['int_access'] == 1,
-                                                   sample_access['int_access'] == 0],
-                                         choicelist=[1 / sample_access['ps_access'],
-                                                     1 / (1 - sample_access['ps_access'])],
-                                         default=np.nan)
-
-# stabilised IPTW (avoid inflation of N after weighting)
-sample_access['iptw_access_s'] = np.select(condlist=[sample_access['int_access'] == 1,
-                                                     sample_access['int_access'] == 0],
-                                           choicelist=[
-                                               np.nanmean(sample_access['int_access']) / sample_access['ps_access'],
-                                               (1 - np.nanmean(sample_access['int_access'])) / (
-                                                       1 - sample_access['ps_access'])],
-                                           default=np.nan)
-
-########## Treatment 2: digital literacy
-# Drop NAs
-sample_literacy = sample.dropna(
-    subset=['PC1_b', 'total_income_bu_d', 'age', 'sex', 'ethnicity', 'edu_age', 'edu_qual', 'n_deprived'])
-sample_literacy['PC1_b'].value_counts(dropna=False)  # 1: 1562, 0: 1132 (N = 2694)
-
-# logit model
-logit_literacy = smf.logit('PC1_b ~ total_income_bu_d + age + sex + ethnicity + edu_age + edu_qual + n_deprived',
+logit_literacy = smf.logit('PC1_b ~ total_income_bu_d + age + sex + ethnicity + edu_age + C(edu_qual) + n_deprived + employ_status + C(marital_status)',
                            data=sample_literacy).fit()
 logit_literacy.summary()
 
@@ -84,17 +51,11 @@ outcome_list = ['srh', 'high_bp', 'high_chol', 'diabetes', 'asthma', 'arthritis'
 table_ate = pd.DataFrame({'Outcome': ['Self-reported health', '', 'High blood pressure', '', 'High cholesterol', '',
                                       'Diabetes', '', 'Asthma', '', 'Arthritis', '', 'Cancer', '', 'CES-D items', '',
                                       'CES-D diagnosis', ''],
-                          'Internet access': np.nan,
                           'Digital literacy': np.nan,
                           'p_literacy': np.nan})
 
 for i in range(len(outcome_list)):
     outcome = outcome_list[i]
-    model_access = smf.wls(f'{outcome} ~ int_access',
-                           data=sample_access,
-                           weights=sample_access['iptw_access_s']).fit()
-    table_ate.loc[i * 2, 'Internet access'] = model_access.params['int_access']
-    table_ate.loc[i * 2 + 1, 'Internet access'] = model_access.tvalues['int_access']
 
     model_literacy = smf.wls(f'{outcome} ~ PC1_b',
                              data=sample_literacy,

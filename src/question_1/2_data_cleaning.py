@@ -11,12 +11,6 @@ derived_path = Path('1_sample_selection.py').resolve().parents[3] / 'Data' / 'de
 main_10 = pd.read_csv(derived_path / 'wave_10_sample.csv')
 
 ########## Treatment
-main_10['HOBB'].value_counts(dropna=False)
-main_10['int_access'] = np.select(condlist=[main_10['HOBB'] == 1, main_10['HOBB'] == 2],
-                                  choicelist=[1, 0],
-                                  default=np.nan)  # 1 = yes, 0 = no
-main_10['int_access'].value_counts(dropna=False)
-
 main_10['SCINT'].value_counts(dropna=False)
 main_10['int_freq'] = np.where(main_10['SCINT'] > 0, main_10['SCINT'], np.nan)  # 1 = every day, 6 = never
 main_10['int_freq'].value_counts(dropna=False)
@@ -41,7 +35,7 @@ main_10[activity_list] = main_10[activity_list].where(main_10[activity_list] >= 
 pd.crosstab(main_10['int_freq'], main_10['SCINA21'])
 pd.crosstab(main_10['int_freq'], main_10['SCINA02'])
 
-########## Sample selection
+########## Reverse causality
 reason_list = [f'SCINNO0{number}' for number in range(1, 10)]
 main_10['SCINNO06'].value_counts(dropna=False)
 main_10[reason_list] = main_10[reason_list].where(main_10[reason_list] >= 0, other=np.nan)  # 1 = yes, 0 = no
@@ -108,15 +102,31 @@ main_10['cesd_b'] = np.select(condlist=[((main_10[cesd_list] == 1).sum(axis=1)) 
 main_10['cesd_b'].value_counts(dropna=False)
 
 ########## Controls
+# employment status
+main_10['WpDes'].value_counts(dropna=False)
+main_10['DhWork'].value_counts(dropna=False)  # whether in paid employment
+main_10['employ_status'] = np.select(condlist=[main_10['DhWork'] == 1, main_10['DhWork'] == 2],
+                                     choicelist=[1, 0],
+                                     default=np.nan)
+main_10['employ_status'].value_counts(dropna=False)
+
 ### income
+# employment
+main_10['IaSInc'].value_counts(dropna=False)
+main_10['employ_income'] = np.select(condlist=[main_10['IaSInc'] == -1, main_10['IaSInc'] >= 0],
+                                     choicelist=[0, main_10['IaSInc']],
+                                     default=np.nan)
+main_10['employ_income'].value_counts(dropna=False)
+
 # annuity
-main_10['IaAIm'].value_counts(dropna=False)
+main_10['IaAIm'].value_counts(dropna=False) # respondent
 main_10['annuity'] = np.select(condlist=[main_10['IaAIm'] == -1, main_10['IaAIm'] >= 0],
                                choicelist=[0, main_10['IaAIm']],
                                default=np.nan)
 main_10['annuity'].value_counts(dropna=False)
 
-main_10['IaAIp'].value_counts(dropna=False)
+pd.crosstab(main_10['IaAIp'], main_10['IaAIm'])
+main_10['IaAIp'].value_counts(dropna=False) # spouse
 main_10['annuity_s'] = np.select(condlist=[main_10['IaAIp'] == -1, main_10['IaAIp'] >= 0],
                                  choicelist=[0, main_10['IaAIp']],
                                  default=np.nan)
@@ -124,15 +134,20 @@ main_10['annuity_s'].value_counts(dropna=False)
 
 # private pension
 main_10['IaPPei'].value_counts(dropna=False)
-main_10['p_pension'] = np.select(condlist=[main_10['IaPPei'] == -1, main_10['IaPPei'] >= 0],
+main_10['IaPPmo'].value_counts(dropna=False)
+main_10['p_pension_y'] = np.select(condlist=[main_10['IaPPei'] == -1, main_10['IaPPei'] >= 0],
                                  choicelist=[0, main_10['IaPPei']],
                                  default=np.nan)
+main_10['p_pension_m'] = np.select(condlist=[main_10['IaPPmo'] == -1, main_10['IaPPmo'] >= 0],
+                                   choicelist=[0, main_10['IaPPmo'] * 12],
+                                   default=np.nan)
+main_10['p_pension'] = main_10['p_pension_y'] + main_10['p_pension_m']
 main_10['p_pension'].value_counts(dropna=False)
 
 # write a function to facilitate period and amount
 def period_amount(period, amount):
-    return np.select(condlist=[main_10[period] == -1,
-                               main_10[amount] == -1,
+    return np.select(condlist=[(main_10[period] == -1) & (main_10[amount] == -1),
+                               main_10[period].isin([-8, -9]),
                                main_10[amount].isin([-8, -9]),
                                main_10[period] == 1,
                                main_10[period] == 2,
@@ -148,7 +163,7 @@ def period_amount(period, amount):
                                main_10[period] == 52,
                                main_10[period] == 90],
                      choicelist=[0,
-                                 0,
+                                 np.nan,
                                  np.nan,
                                  main_10[amount] * 52,
                                  main_10[amount] * (52/2),
@@ -166,11 +181,12 @@ def period_amount(period, amount):
                      default=np.nan)
 
 # state pension
-main_10['IasPa'].value_counts(dropna=False)
-main_10['IaPAM'].value_counts(dropna=False)
-main_10['s_pension'] = period_amount(period='IasPa', amount='IaPAM')
+main_10['IasPa'].value_counts(dropna=False)  # period
+main_10['IaPAM'].value_counts(dropna=False)  # amount
+pd.crosstab(main_10['IasPa'], main_10['IaPAM'])
+main_10['s_pension'] = period_amount(period='IasPa', amount='IaPAM')  # respondent
 main_10['s_pension'].value_counts(dropna=False)
-main_10['s_pension_s'] = period_amount('IaSPp', 'IaPPAm')
+main_10['s_pension_s'] = period_amount('IaSPp', 'IaPPAm')  # spouse
 main_10['s_pension_s'].value_counts(dropna=False)
 
 # state benefits
@@ -248,7 +264,7 @@ benefit_cols = [f's_benefit_{i}' for i in range(1, 43)]
 interest_cols = ['interest_savings', 'interest_national', 'interest_premium', 'interest_isa', 'interest_share',
                  'interest_trust', 'interest_bond', 'interest_rent', 'interest_farm', 'income_other']
 
-main_10['total_income_bu'] = main_10[['annuity', 'annuity_s', 'p_pension', 's_pension', 's_pension_s']].sum(axis=1, min_count=3) + \
+main_10['total_income_bu'] = main_10[['employ_income', 'annuity', 'annuity_s', 'p_pension', 's_pension', 's_pension_s']].sum(axis=1, min_count=3) + \
                              main_10[benefit_cols].sum(axis=1, min_count=21) + \
                              main_10[interest_cols].sum(axis=1, min_count=5)
 main_10['total_income_bu'].value_counts(dropna=False)
@@ -259,7 +275,7 @@ main_10['total_income_bu_d'].value_counts(dropna=False)
 
 # age
 main_10['indager'].value_counts(dropna=False)
-main_10['age'] = np.where(main_10['indager'] == -7, 99, main_10['indager'])
+main_10['age'] = np.where(main_10['indager'] <= 0, np.nan, main_10['indager'])
 main_10['age'].value_counts(dropna=False)
 
 # sex
@@ -280,6 +296,7 @@ main_10['ethnicity'].value_counts(dropna=False)
 # marital status
 main_10['dimarr'].value_counts(dropna=False)  # 1-6 categories
 main_10['marital_status'] = main_10['dimarr'].astype(str)
+type(main_10['marital_status'][0])
 
 # educational attainment
 # age finished education
@@ -290,10 +307,9 @@ main_10['edu_age'] = np.select(condlist=[main_10['fqendm'] > 0, main_10['fqendm'
                                choicelist=[main_10['fqendm'], main_10['edend']],
                                default=np.nan)
 main_10['edu_age'] = np.where(main_10['edu_age'] == 1, np.nan, main_10['edu_age'])
-main_10['edu_age'].value_counts(dropna=False)  # 451 NAs possibly because there are new respondents
+main_10['edu_age'].value_counts(dropna=False)
 
 main_10['edqual'].value_counts(dropna=False)
-main_10['FqMqua'].value_counts(dropna=False)
 main_10['fqqumnv5'].value_counts(dropna=False)
 
 main_10['edu_qual'] = np.select(condlist=[main_10['fqqumnv5'] == 1,
@@ -304,8 +320,8 @@ main_10['edu_qual'] = np.select(condlist=[main_10['fqqumnv5'] == 1,
                                           main_10['edqual'] < 0],
                                 choicelist=[1, 1, 3, 4, 5, np.nan],
                                 default=main_10['edqual'])
-main_10['edu_qual'] = np.where(main_10['edu_qual'] == 6, np.nan, main_10['edu_qual'])  # edqual == 6 means foreign
-main_10['edu_qual'].value_counts(dropna=False) # 541 NAs possibly because there are new respondents
+# main_10['edu_qual'] = np.where(main_10['edu_qual'] == 6, np.nan, main_10['edu_qual'])  # edqual == 6 means foreign
+main_10['edu_qual'].value_counts(dropna=False)
 
 # deprivation
 deprive_list = ['exrelefo', 'exreleme', 'exreleou', 'exrelede', 'exreleel', 'exrelefa', 'exrelepr', 'exreleho', 'exreletr']
@@ -323,6 +339,6 @@ main_10['n_deprived'] = main_10[deprive_list].sum(axis=1, min_count=1)  # 0 = le
 main_10['n_deprived'].value_counts(dropna=False)
 
 ########## Save data
-main_10.to_csv(derived_path / 'wave_10_cleaned_edu.csv', index=False)
+main_10.to_csv(derived_path / 'wave_10_cleaned.csv', index=False)
 
 ########## Inspection

@@ -10,7 +10,7 @@ figure_path = Path('1_sample_selection.py').resolve().parents[2] / 'output' / 'f
 table_path = Path('1_sample_selection.py').resolve().parents[2] / 'output' / 'table'
 
 # Read data
-main_10 = pd.read_csv(derived_path / 'wave_10_pca_edu.csv')
+main_10 = pd.read_csv(derived_path / 'wave_10_pca.csv')
 
 # Treatment
 main_10['PC1_b'].value_counts(dropna=False)  # 1: 2088, 0: 1454, NaN: 54

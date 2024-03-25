@@ -25,7 +25,7 @@ main_var = (['idauniq', 'W10scout',
              'exreletr', 'EXRele96'] + \
             ['indager', 'indsex', 'fqethnmr', 'dimarr', 'FqMqua', 'fqqumnv5', 'fqqumnv4', 'fqqumnv3', 'fqqumnv2',
              'fqqumnv1', 'fqendm'] + \
-            ['IaAIm', 'IaAIp', 'IaPPei', 'IasPa', 'IaPAM', 'IaSPp', 'IaPPAm'] + \
+            ['IaSInc', 'IaAIm', 'IaAIp', 'IaPPmo', 'IaPPei', 'IasPa', 'IaPAM', 'IaSPp', 'IaPPAm'] + \
             ['IaP'] + [f'IaP{number}' for number in range(2, 43)] + \
             ['IaA'] + [f'IaA{number}' for number in range(2, 43)] + \
             ['IaSint', 'IaNSi', 'IaNPBP', 'IaIsaD', 'IaSSSi', 'Iauiti', 'Iabgi', 'Iaira', 'IafBA', 'IaSiOi'] + \
