@@ -29,7 +29,9 @@ main_var = (['idauniq', 'W10scout',
             ['IaP'] + [f'IaP{number}' for number in range(2, 43)] + \
             ['IaA'] + [f'IaA{number}' for number in range(2, 43)] + \
             ['IaSint', 'IaNSi', 'IaNPBP', 'IaIsaD', 'IaSSSi', 'Iauiti', 'Iabgi', 'Iaira', 'IafBA', 'IaSiOi'] + \
-            ['CfSumA', 'CfSumB', 'CfSumC', 'CfSumD', 'CfSumE', 'CfSumF', 'CfMetM'])  # cognitive function
+            ['CfMetM'] + \
+            ['CfLitB', 'CfLitC', 'CfLitD', 'CfLitE'] + \
+            ['CfSvA', 'CfSvB', 'CfSvC', 'CfSvD', 'CfSvE'])
 main_10 = pd.read_table(main_path / 'wave_10_elsa_data_eul_v1.tab', usecols=main_var)
 
 ifs_var = ['idauniq', 'elsa', 'nonwhite', 'edend', 'edqual']

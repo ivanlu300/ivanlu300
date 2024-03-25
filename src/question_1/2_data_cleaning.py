@@ -298,7 +298,46 @@ main_10['dimarr'].value_counts(dropna=False)  # 1-6 categories
 main_10['marital_status'] = main_10['dimarr'].astype(str)
 type(main_10['marital_status'][0])
 
-# educational attainment
+### cognitive function
+# memory
+main_10['CfMetM'].value_counts(dropna=False)
+main_10['memory'] = np.where(main_10['CfMetM'] < 0, np.nan, main_10['CfMetM'])  # 1 = excellent, 5 = poor
+main_10['memory'].value_counts(dropna=False)
+
+# numeracy
+numeracy_list = ['num_a', 'num_b', 'num_c', 'num_d', 'num_e']
+main_10['CfSvA'].value_counts(dropna=False)
+main_10['num_a'] = np.select(condlist=[main_10['CfSvA'] == 93, main_10['CfSvA'] < 0],
+                             choicelist=[1, np.nan],
+                             default=0)
+main_10['CfSvB'].value_counts(dropna=False)
+main_10['num_b'] = np.select(condlist=[main_10['CfSvB'] == 86, main_10['CfSvB'] < 0],
+                             choicelist=[1, np.nan],
+                             default=0)
+main_10['CfSvC'].value_counts(dropna=False)
+main_10['num_c'] = np.select(condlist=[main_10['CfSvC'] == 79, main_10['CfSvC'] < 0],
+                             choicelist=[1, np.nan],
+                             default=0)
+main_10['CfSvD'].value_counts(dropna=False)
+main_10['num_d'] = np.select(condlist=[main_10['CfSvD'] == 72, main_10['CfSvD'] < 0],
+                             choicelist=[1, np.nan],
+                             default=0)
+main_10['CfSvE'].value_counts(dropna=False)
+main_10['num_e'] = np.select(condlist=[main_10['CfSvE'] == 65, main_10['CfSvE'] < 0],
+                             choicelist=[1, np.nan],
+                             default=0)
+main_10['numeracy'] = main_10[numeracy_list].sum(axis=1, min_count=1)  # 0 = least numerate, 5 = most numerate
+main_10['numeracy'].value_counts(dropna=False)
+
+# comprehension
+comprehension_list = ['CfLitB', 'CfLitC', 'CfLitD', 'CfLitE']
+main_10['CfLitC'].value_counts(dropna=False)
+main_10[comprehension_list] = main_10[comprehension_list].where(main_10[comprehension_list] > 0, other=np.nan)
+main_10[comprehension_list] = main_10[comprehension_list].replace({2: 0})
+main_10['comprehension'] = main_10[comprehension_list].sum(axis=1, min_count=1)  # 0 = least comprehend, 4 = most comprehend
+main_10['comprehension'].value_counts(dropna=False)
+
+### educational attainment
 # age finished education
 pd.crosstab(main_10['fqendm'], main_10['edend'], dropna=False)
 main_10['fqendm'].value_counts(dropna=False)

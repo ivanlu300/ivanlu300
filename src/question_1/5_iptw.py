@@ -22,11 +22,11 @@ sample = main_10.loc[(main_10['SCINNO05'] != 1) & (main_10['SCINNO06'] != 1), :]
 
 ########## Treatment: digital literacy
 # Drop NAs
-sample_literacy = sample.dropna(subset=['PC1_b', 'total_income_bu_d', 'age', 'sex', 'ethnicity', 'edu_age', 'edu_qual', 'n_deprived', 'employ_status', 'marital_status'])
-sample_literacy['PC1_b'].value_counts(dropna=False)  # 1: 2186, 0: 1538
+sample_literacy = sample.dropna(subset=['PC1_b', 'total_income_bu_d', 'age', 'sex', 'ethnicity', 'edu_age', 'edu_qual', 'n_deprived', 'employ_status', 'marital_status', 'memory', 'numeracy', 'comprehension'])
+sample_literacy['PC1_b'].value_counts(dropna=False)  # 1: 2113, 0: 1447
 
 # logit model
-logit_literacy = smf.logit('PC1_b ~ total_income_bu_d + age + sex + ethnicity + edu_age + C(edu_qual) + n_deprived + employ_status + C(marital_status)',
+logit_literacy = smf.logit('PC1_b ~ total_income_bu_d + age + sex + ethnicity + edu_age + C(edu_qual) + n_deprived + employ_status + C(marital_status) + memory + numeracy + comprehension',
                            data=sample_literacy).fit()
 logit_literacy.summary()
 
