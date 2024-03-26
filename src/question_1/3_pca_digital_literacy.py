@@ -47,7 +47,7 @@ pc1_loadings = pd.DataFrame({'Item': ['Frequency of using the Internet',
                                       'satellite navigation', 'buying public transport tickets', 'booking a taxi',
                                       'finding local amenities', 'controlling household appliances',
                                       'none of the above'],
-                             'Description': np.nan,
+                             'Description': '',
                              'Loading': pca_loadings.iloc[0, :] | p(round, 3)
                              })
 
