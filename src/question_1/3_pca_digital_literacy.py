@@ -8,10 +8,10 @@ from sklearn.decomposition import PCA
 from sklearn.preprocessing import StandardScaler
 
 # Set up paths
-main_path = Path('1_sample_selection.py').resolve().parents[3] / 'Data' / 'elsa_10' / 'tab'
-derived_path = Path('1_sample_selection.py').resolve().parents[3] / 'Data' / 'derived_10'
-figure_path = Path('1_sample_selection.py').resolve().parents[2] / 'output' / 'figure'
-table_path = Path('1_sample_selection.py').resolve().parents[2] / 'output' / 'table'
+main_path = Path().resolve().parents[2] / 'Data' / 'elsa_10' / 'tab'
+derived_path = Path().resolve().parents[2] / 'Data' / 'derived_10'
+figure_path = Path().resolve().parents[1] / 'output' / 'figure'
+table_path = Path().resolve().parents[1] / 'output' / 'table'
 
 # Read data
 main_10 = pd.read_csv(derived_path / 'wave_10_cleaned.csv')
