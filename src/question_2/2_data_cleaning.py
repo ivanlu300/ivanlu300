@@ -15,6 +15,7 @@ sample['scint'].value_counts(dropna=False)
 sample['int_freq_9'] = np.where(sample['scint'] > 0, sample['scint'], np.nan)  # 1 = every day, 6 = never
 sample['int_freq_9'].value_counts(dropna=False)
 
+### devices
 device_list_9 = ['scinddt', 'scindlt', 'scindtb', 'scindph', 'scind95']
 pd.crosstab(sample['scint'], sample['scinddt'], dropna=False)
 # respondents with SCINT == 6 were not asked about devices (hence coded as -1), but I assume they have no device
@@ -26,6 +27,19 @@ sample['scind96'] = sample['scind96'].where(sample['scint'] != 6, other=1)
 
 # then deal with NAs
 sample[device_list_9 + ['scind96']] = sample[device_list_9 + ['scind96']].replace(-9, np.nan)
+
+### internet activities
+activity_list_9 = ['scinaem', 'scinacl', 'scinaed', 'scinahe', 'scinabk', 'scinash', 'scinasl', 'scinasn', 'scinact', 'scinanw', 'scinast', 'scinagm', 'scinajb', 'scinaps', 'scina95']
+pd.crosstab(sample['scint'], sample['scinaem'], dropna=False)
+# respondents with SCINT == 6 were not asked about activities (hence coded as -1), but I assume they have no activity
+sample[activity_list_9] = sample[activity_list_9].where(sample['scint'] != 6, other=0)  # 1 = yes, 0 = no
+
+# respondents with SCINT == 6 were not asked about scina96 (hence coded as -1), but I assume they have no activity
+pd.crosstab(sample['scint'], sample['scina96'], dropna=False)
+sample['scina96'] = sample['scina96'].where(sample['scint'] != 6, other=1)
+
+# then deal with NAs
+sample[activity_list_9 + ['scina96']] = sample[activity_list_9 + ['scina96']].replace(-9, np.nan)
 
 ########## Outcome (used for DiD)
 # self-reported health
