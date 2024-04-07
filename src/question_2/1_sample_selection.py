@@ -9,8 +9,9 @@ derived_path = Path('../question_1/1_sample_selection.py').resolve().parents[3] 
 
 # Read data
 main_10_var = ['idauniq', 'W10scout',
-               'CaHHa', 'WpDes', 'askinst',  # sample selection
+               'CaHHa', 'askinst',  # sample selection
                'Hehelf',  # self-reported health
+               'WpDes', 'DhWork',  # employment status
                'PScedA', 'PScedB', 'PScedC', 'PScedD', 'PScedE', 'PScedF', 'PScedG', 'PScedH',  # ces-d
                'HOBB', 'SCINT'] + \
               ['SCIND'] + [f'SCIND0{number}' for number in range(1, 6)] + \
@@ -24,24 +25,31 @@ main_10_var = ['idauniq', 'W10scout',
                'exreletr', 'EXRele96'] + \
               ['indager', 'indsex', 'fqethnmr', 'dimarr', 'FqMqua', 'fqqumnv5', 'fqqumnv4', 'fqqumnv3', 'fqqumnv2',
                'fqqumnv1', 'fqendm'] + \
-              ['IaAIm', 'IaAIp', 'IaPPei', 'IasPa', 'IaPAM', 'IaSPp', 'IaPPAm'] + \
+              ['IaSInc', 'IaAIm', 'IaAIp', 'IaPPmo', 'IaPPei', 'IasPa', 'IaPAM', 'IaSPp', 'IaPPAm'] + \
               ['IaP'] + [f'IaP{number}' for number in range(2, 43)] + \
               ['IaA'] + [f'IaA{number}' for number in range(2, 43)] + \
-              ['IaSint', 'IaNSi', 'IaNPBP', 'IaIsaD', 'IaSSSi', 'Iauiti', 'Iabgi', 'Iaira', 'IafBA', 'IaSiOi']
+              ['IaSint', 'IaNSi', 'IaNPBP', 'IaIsaD', 'IaSSSi', 'Iauiti', 'Iabgi', 'Iaira', 'IafBA', 'IaSiOi'] + \
+              ['CfMetM'] + \
+              ['CfLitB', 'CfLitC', 'CfLitD', 'CfLitE'] + \
+              ['CfSvA', 'CfSvB', 'CfSvC', 'CfSvD', 'CfSvE']
 
 main_9_var = ['idauniq', 'w9scout',
-              'cahha', 'wpdes', 'askinst',  # sample selection
+              'cahha', 'askinst',  # sample selection
               'hehelf',  # self-reported health
+              'wpdes', 'dhwork',  # employment status
               'psceda', 'pscedb', 'pscedc', 'pscedd', 'pscede', 'pscedf', 'pscedg', 'pscedh',  # ces-d
               'hobb', 'scint'] + \
              ['scinddt', 'scindlt', 'scindtb', 'scindph', 'scind95', 'scind96'] + \
              ['scinaem', 'scinacl', 'scinaed', 'scinahe', 'scinabk', 'scinash', 'scinasl', 'scinasn', 'scinact', 'scinanw', 'scinast', 'scinagm', 'scinajb', 'scinaps', 'scina95', 'scina96'] + \
-             ['hedasbp', 'hedasch', 'hedacdi',  # (blood pressure, cholesterol still has, diabetes whether confirmed)
+             ['hedasbp', 'hedasch', 'hedawdi',  # (blood pressure, cholesterol still has, diabetes ever diagnosed)
               'hedbsas', 'hedbsar', 'hedbsca'] + \
              ['cafam', 'cafam2', 'cafam3', 'cafam4', 'cafam5', 'cafam6', 'cafam7', 'cafam8', 'cafam9', 'cafam10', 'cafam11', 'cafam12', 'cafam13', 'cafam14', 'cafam15', 'cafam16', 'cafam17', 'cafam18', 'cafam19', 'cafam20', 'cafam21', 'cafam22', 'cafam23', 'cafam24', 'cafam25'] + \
-             ['exrela', 'exrelefo', 'exreleme', 'exreleou', 'exrelede', 'exreleel', 'exrelefa', 'exrelepr', 'exreleho', 'exreletr', 'exrele96']  # deprivation index
+             ['exrela', 'exrelefo', 'exreleme', 'exreleou', 'exrelede', 'exreleel', 'exrelefa', 'exrelepr', 'exreleho', 'exreletr', 'exrele96'] + \
+             ['cfmetm'] + \
+             ['cflitb', 'cflitc', 'cflitd', 'cflite'] + \
+             ['cfsva', 'cfsvb', 'cfsvc', 'cfsvd', 'cfsve']
 
-ifs_9_var = ['idauniq', 'age', 'sex', 'nonwhite', 'marstat', 'edend', 'edqual']
+ifs_9_var = ['idauniq', 'age', 'sex', 'nonwhite', 'marstat', 'edend', 'edqual', 'ndepriv']
 
 financial_9_var = ['idauniq', 'eqtotinc_bu_s', 'yq10_bu_s']  # BU equivalised total income, and its decile
 
