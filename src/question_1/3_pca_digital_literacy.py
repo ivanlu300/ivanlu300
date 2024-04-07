@@ -66,7 +66,7 @@ pca_screeplot = (pn.ggplot(pca_pve, pn.aes(x='PC', y='PVE'))
                  + pn.scale_y_continuous(limits=(0, 0.3))
                  + pn.labs(x='Principal component', y='Proportion of variance explained'))
 
-pn.ggsave(pca_screeplot, filename='pca_screeplot.png', path=figure_path, dpi=300)
+pn.ggsave(pca_screeplot, filename='pca_screeplot_q1.png', path=figure_path, dpi=300)
 
 # Extract PCA scores
 pca_scores = pca_digital.transform(digital_10_scaled) | p(pd.DataFrame)
