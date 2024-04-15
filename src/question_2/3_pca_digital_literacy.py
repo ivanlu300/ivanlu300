@@ -1,8 +1,10 @@
 import pandas as pd
 import numpy as np
-import plotnine as pn
-from pathlib import Path, PurePath
-from sspipe import p, px
+from matplotlib import pyplot as plt
+import seaborn as sns
+import plotly.express as px
+from pathlib import Path
+from sspipe import p
 
 from sklearn.decomposition import PCA
 from sklearn.preprocessing import StandardScaler
@@ -58,17 +60,33 @@ pca_pve = pd.DataFrame({'PC': range(1, digital_9_scaled.shape[1] + 1),
                         'PVE': pca_digital.explained_variance_ratio_})
 
 ########## Screeplot
-pca_screeplot = (pn.ggplot(pca_pve, pn.aes(x='PC', y='PVE'))
-                 + pn.geom_point()
-                 + pn.geom_line()
-                 + pn.theme_bw()
-                 + pn.scale_x_continuous(breaks=range(1, digital_9_scaled.shape[1] + 1))
-                 + pn.scale_y_continuous(breaks=np.arange(0, 0.30, 0.05))
-                 + pn.labs(x='Principal component', y='Proportion of variance explained'))
+# seaborn
+sns.lineplot(x='PC', y='PVE', data=pca_pve)
+sns.scatterplot(x='PC', y='PVE', data=pca_pve)
 
-pn.ggsave(pca_screeplot, filename='pca_screeplot_q2.png', path=figure_path, dpi=300)
+plt.xlabel('Principal component')
+plt.ylabel('Proportion of variance explained')
+plt.xticks(range(1, digital_9_scaled.shape[1] + 1))
+plt.yticks(np.arange(0, 0.30, 0.05))
 
-# Extract PCA scores
+plt.savefig(figure_path / 'pca_screeplot_q2.png')
+plt.show()
+
+# plotly
+fig = px.scatter(pca_pve, x='PC', y='PVE')
+fig.add_trace(px.line(pca_pve, x='PC', y='PVE').data[0])
+
+fig.update_layout(
+    xaxis_title='Principal component',
+    yaxis_title='Proportion of variance explained',
+    xaxis=dict(tickmode='array', tickvals=list(range(1, digital_9_scaled.shape[1] + 1))),
+    yaxis=dict(tickmode='array', tickvals=list(np.arange(0, 0.30, 0.05))),
+)
+
+fig.write_image(figure_path / 'pca_screeplot_q2.png')
+fig.show()
+
+########## Extract PCA scores
 pca_scores = pca_digital.transform(digital_9_scaled) | p(pd.DataFrame)
 digital_9['PC1'] = pca_scores.iloc[:, 0].values  # smaller values indicate better digital literacy
 digital_9['PC1'].isna().sum()  # no NAs

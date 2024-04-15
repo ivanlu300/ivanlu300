@@ -1,8 +1,8 @@
 import pandas as pd
 import numpy as np
-import plotnine as pn
+import plotly.express as px
 from pathlib import Path
-from sspipe import p, px
+from sspipe import p
 
 from sklearn.decomposition import PCA
 from sklearn.preprocessing import StandardScaler
@@ -58,15 +58,18 @@ pca_pve = pd.DataFrame({'PC': range(1, digital_10_scaled.shape[1] + 1),
                         'PVE': pca_digital.explained_variance_ratio_})
 
 ########## Screeplot
-pca_screeplot = (pn.ggplot(pca_pve, pn.aes(x='PC', y='PVE'))
-                 + pn.geom_point()
-                 + pn.geom_line()
-                 + pn.theme_bw()
-                 + pn.scale_x_continuous(breaks=range(1, digital_10_scaled.shape[1] + 1))
-                 + pn.scale_y_continuous(limits=(0, 0.3))
-                 + pn.labs(x='Principal component', y='Proportion of variance explained'))
+fig = px.scatter(pca_pve, x='PC', y='PVE')
+fig.add_trace(px.line(pca_pve, x='PC', y='PVE').data[0])
 
-pn.ggsave(pca_screeplot, filename='pca_screeplot_q1.png', path=figure_path, dpi=300)
+fig.update_layout(
+    xaxis_title='Principal component',
+    yaxis_title='Proportion of variance explained',
+    xaxis=dict(tickmode='array', tickvals=list(range(1, digital_10_scaled.shape[1] + 1))),
+    yaxis=dict(tickmode='array', tickvals=list(np.arange(0, 0.30, 0.05))),
+)
+
+fig.write_image(figure_path / 'pca_screeplot_q1.png')
+fig.show()
 
 # Extract PCA scores
 pca_scores = pca_digital.transform(digital_10_scaled) | p(pd.DataFrame)
