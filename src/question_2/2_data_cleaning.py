@@ -395,8 +395,8 @@ sample['cfsve'].value_counts(dropna=False)
 sample['num_e_9'] = np.select(condlist=[sample['cfsve'] == 65, sample['cfsve'] < 0],
                              choicelist=[1, np.nan],
                              default=0)
-sample['numeracy'] = sample[numeracy_list_9].sum(axis=1, min_count=1)  # 0 = least numerate, 5 = most numerate
-sample['numeracy'].value_counts(dropna=False)
+sample['numeracy_9'] = sample[numeracy_list_9].sum(axis=1, min_count=1)  # 0 = least numerate, 5 = most numerate
+sample['numeracy_9'].value_counts(dropna=False)
 
 # comprehension (not available in wave 9)
 
