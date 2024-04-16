@@ -48,7 +48,7 @@ sample['srh_9'] = np.where(sample['hehelf'] > 0, sample['hehelf'], np.nan)
 sample['srh_9'].value_counts(dropna=False)
 
 sample['Hehelf'].value_counts(dropna=False)  # 1 = excellent, 5 = poor
-sample['srh_10'] = np.where(sample['hehelf'] > 0, sample['hehelf'], np.nan)
+sample['srh_10'] = np.where(sample['Hehelf'] > 0, sample['Hehelf'], np.nan)
 sample['srh_10'].value_counts(dropna=False)
 
 # cardiovascular disease
