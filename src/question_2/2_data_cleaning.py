@@ -1,7 +1,7 @@
 import pandas as pd
 import numpy as np
 from pathlib import Path
-from sspipe import p, px
+from sspipe import p
 
 # Set up paths
 main_path = Path().resolve().parents[2] / 'Data' / 'elsa_10' / 'tab'
@@ -15,6 +15,11 @@ sample['scint'].value_counts(dropna=False)
 sample['int_freq_9'] = np.where(sample['scint'] > 0, sample['scint'], np.nan)  # 1 = every day, 6 = never
 sample['int_freq_9'].value_counts(dropna=False)
 
+sample['SCINT'].value_counts(dropna=False)
+sample['int_freq_10'] = np.where(sample['SCINT'] > 0, sample['SCINT'], np.nan)  # 1 = every day, 6 = never
+sample['int_freq_10'].value_counts(dropna=False)
+
+########## Wave 9
 ### devices
 device_list_9 = ['scinddt', 'scindlt', 'scindtb', 'scindph', 'scind95']
 pd.crosstab(sample['scint'], sample['scinddt'], dropna=False)
@@ -40,6 +45,28 @@ sample['scina96'] = sample['scina96'].where(sample['scint'] != 6, other=1)
 
 # then deal with NAs
 sample[activity_list_9 + ['scina96']] = sample[activity_list_9 + ['scina96']].replace(-9, np.nan)
+
+########## Wave 10
+### devices
+device_list_10 = [f'SCIND0{number}' for number in range(1, 6)]
+pd.crosstab(sample['SCINT'], sample['SCIND01'])
+# respondents with SCINT == 6 were not asked about devices (hence coded as -1), but I assume they have no device
+sample[device_list_10] = sample[device_list_10].where(sample['SCINT'] < 6, other=0)
+# then deal with NAs
+sample[device_list_10] = sample[device_list_10].where(sample[device_list_10] >= 0, other=np.nan)  # 1 = yes, 0 = no
+pd.crosstab(sample['int_freq_10'], sample['SCIND01'])
+
+activity_list_10 = [f'SCINA0{number}' for number in range(1, 10)] + [f'SCINA{number}' for number in range(10, 22)]
+activity_list_no96_10 = [f'SCINA0{number}' for number in range(1, 10)] + [f'SCINA{number}' for number in range(10, 21)]
+pd.crosstab(sample['SCINT'], sample['SCINA01'])
+# respondents with SCINT == 6 were not asked about activities (hence coded as -1), but I assume they have no activity
+sample[activity_list_no96_10] = sample[activity_list_no96_10].where(sample['SCINT'] < 6, other=0)
+# 21 is none
+sample['SCINA21'] = sample['SCINA21'].where(sample['SCINT'] < 6, other=1)
+# then deal with NAs
+sample[activity_list_10] = sample[activity_list_10].where(sample[activity_list_10] >= 0, other=np.nan)  # 1 = yes, 0 = no
+pd.crosstab(sample['int_freq_10'], sample['SCINA21'])
+pd.crosstab(sample['int_freq_10'], sample['SCINA02'])
 
 ########## Outcome (used for DiD)
 # self-reported health
