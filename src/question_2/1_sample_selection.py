@@ -1,7 +1,7 @@
 import pandas as pd
 import numpy as np
 from pathlib import Path
-from sspipe import p, px
+from sspipe import p
 
 # Set up paths
 main_path = Path().resolve().parents[2] / 'Data' / 'elsa_10' / 'tab'
@@ -18,8 +18,7 @@ main_10_var = ['idauniq', 'W10scout',
               ['SCINA'] + [f'SCINA0{number}' for number in range(1, 10)] + [f'SCINA{number}' for number in
                                                                             range(10, 22)] + \
               ['SCINNO'] + [f'SCINNO0{number}' for number in range(1, 10)] + \
-              ['HEHaveBP', 'HEHaveHC', 'HEEverDI',  # (blood pressure, cholesterol still has, diabetes ever diagnosed)
-               'HEHaveAS', 'HEHaveAR', 'HEHaveCA'] + \
+              ['HEEverBP', 'HEEverHC', 'HEEverDI', 'HEEverAS', 'HEEverAR', 'HEEverCA'] + \
               ['CaFam'] + [f'CaFam{number}' for number in range(2, 26)] + \
               ['EXRela', 'exrelefo', 'exreleme', 'exreleou', 'exrelede', 'exreleel', 'exrelefa', 'exrelepr', 'exreleho',
                'exreletr', 'EXRele96'] + \
@@ -43,6 +42,8 @@ main_9_var = ['idauniq', 'w9scout',
              ['scinaem', 'scinacl', 'scinaed', 'scinahe', 'scinabk', 'scinash', 'scinasl', 'scinasn', 'scinact', 'scinanw', 'scinast', 'scinagm', 'scinajb', 'scinaps', 'scina95', 'scina96'] + \
              ['hedasbp', 'hedasch', 'hedawdi',  # (blood pressure, cholesterol still has, diabetes ever diagnosed)
               'hedbsas', 'hedbsar', 'hedbsca'] + \
+             ['hedawbp', 'hedimbp', 'hedawch', 'hedimch', 'hedawdi', 'hedimdi'] + \
+             ['hedbwas', 'hedibas', 'hedbwar', 'hedibar', 'hedbwca', 'hedibca'] + \
              ['cafam', 'cafam2', 'cafam3', 'cafam4', 'cafam5', 'cafam6', 'cafam7', 'cafam8', 'cafam9', 'cafam10', 'cafam11', 'cafam12', 'cafam13', 'cafam14', 'cafam15', 'cafam16', 'cafam17', 'cafam18', 'cafam19', 'cafam20', 'cafam21', 'cafam22', 'cafam23', 'cafam24', 'cafam25'] + \
              ['exrela', 'exrelefo', 'exreleme', 'exreleou', 'exrelede', 'exreleel', 'exrelefa', 'exrelepr', 'exreleho', 'exreletr', 'exrele96'] + \
              ['cfmetm'] + \
