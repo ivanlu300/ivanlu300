@@ -86,36 +86,27 @@ sample['hedimbp'].value_counts(dropna=False)  # 1 = yes, 0 = no
 sample['high_bp_9'] = np.where((sample['hedawbp'] == 1) | (sample['hedimbp'] == 1), 1, 0)  # 1 = yes, 0 = no
 
 sample['HEEverBP'].value_counts(dropna=False)  # 1 = yes, 2 = no
-sample['new_bp'] = np.select(condlist=[sample['high_bp_9'] == 1,
-                                       (sample['high_bp_9'] == 0) & (sample['HEEverBP'] == 1),
-                                       (sample['high_bp_9'] == 0) & (sample['HEEverBP'] == 2)],
-                             choicelist=[0, 1, 0],
-                             default=np.nan)
-sample['new_bp'].value_counts(dropna=False)
+sample['high_bp_10'] = np.select(condlist=[sample['HEEverBP'] == 1, sample['HEEverBP'] == 2],
+                                 choicelist=[1, 0],
+                                 default=np.nan)  # 1 = yes, 0 = no
 
 sample['hedawch'].value_counts(dropna=False)  # 9 = yes, -1 = no
 sample['hedimch'].value_counts(dropna=False)  # 1 = yes, 0 = no
 sample['high_chol_9'] = np.where((sample['hedawch'] == 9) | (sample['hedimch'] == 1), 1, 0)  # 1 = yes, 0 = no
 
 sample['HEEverHC'].value_counts(dropna=False)  # 1 = yes, 2 = no
-sample['new_chol'] = np.select(condlist=[sample['high_chol_9'] == 1,
-                                         (sample['high_chol_9'] == 0) & (sample['HEEverHC'] == 1),
-                                         (sample['high_chol_9'] == 0) & (sample['HEEverHC'] == 2)],
-                               choicelist=[0, 1, 0],
-                               default=np.nan)
-sample['new_chol'].value_counts(dropna=False)
+sample['high_chol_10'] = np.select(condlist=[sample['HEEverHC'] == 1, sample['HEEverHC'] == 2],
+                                   choicelist=[1, 0],
+                                   default=np.nan)  # 1 = yes, 0 = no
 
 sample['hedawdi'].value_counts(dropna=False)  # 7 = yes, -1 = no
 sample['hedimdi'].value_counts(dropna=False)  # 1 = yes, 0 = no
 sample['diabetes_9'] = np.where((sample['hedawdi'] == 7) | (sample['hedimdi'] == 1), 1, 0)  # 1 = yes, 0 = no
 
 sample['HEEverDI'].value_counts(dropna=False)  # 1 = yes, 2 = no
-sample['new_diabetes'] = np.select(condlist=[sample['diabetes_9'] == 1,
-                                             (sample['diabetes_9'] == 0) & (sample['HEEverDI'] == 1),
-                                             (sample['diabetes_9'] == 0) & (sample['HEEverDI'] == 2)],
-                                   choicelist=[0, 1, 0],
-                                   default=np.nan)
-sample['new_diabetes'].value_counts(dropna=False)
+sample['diabetes_10'] = np.select(condlist=[sample['HEEverDI'] == 1, sample['HEEverDI'] == 2],
+                                  choicelist=[1, 0],
+                                  default=np.nan)  # 1 = yes, 0 = no
 
 # non-cardiovascular disease
 sample['hedbwas'].value_counts(dropna=False)  # 2 = yes, -1 = no
@@ -127,12 +118,9 @@ sample['asthma_9'] = np.select(condlist=[(sample['hedbwas'] == 2) | (sample['hed
 sample['asthma_9'].value_counts(dropna=False)
 
 sample['HEEverAS'].value_counts(dropna=False)  # 1 = yes, 2 = no
-sample['new_asthma'] = np.select(condlist=[sample['asthma_9'] == 1,
-                                           (sample['asthma_9'] == 0) & (sample['HEEverAS'] == 1),
-                                           (sample['asthma_9'] == 0) & (sample['HEEverAS'] == 2)],
-                                 choicelist=[0, 1, 0],
-                                 default=np.nan)
-sample['new_asthma'].value_counts(dropna=False)
+sample['asthma_10'] = np.select(condlist=[sample['HEEverAS'] == 1, sample['HEEverAS'] == 2],
+                                choicelist=[1, 0],
+                                default=np.nan)  # 1 = yes, 0 = no
 
 sample['hedbwar'].value_counts(dropna=False)  # 3 = yes, -1 = no
 sample['hedibar'].value_counts(dropna=False)  # 1 = yes, 0 = no
@@ -143,12 +131,9 @@ sample['arthritis_9'] = np.select(condlist=[(sample['hedbwar'] == 3) | (sample['
 sample['arthritis_9'].value_counts(dropna=False)
 
 sample['HEEverAR'].value_counts(dropna=False)  # 1 = yes, 2 = no
-sample['new_arthritis'] = np.select(condlist=[sample['arthritis_9'] == 1,
-                                              (sample['arthritis_9'] == 0) & (sample['HEEverAR'] == 1),
-                                              (sample['arthritis_9'] == 0) & (sample['HEEverAR'] == 2)],
-                                    choicelist=[0, 1, 0],
-                                    default=np.nan)
-sample['new_arthritis'].value_counts(dropna=False)
+sample['arthritis_10'] = np.select(condlist=[sample['HEEverAR'] == 1, sample['HEEverAR'] == 2],
+                                   choicelist=[1, 0],
+                                   default=np.nan)  # 1 = yes, 0 = no
 
 sample['hedbwca'].value_counts(dropna=False)  # 5 = yes, -1 = no
 sample['hedibca'].value_counts(dropna=False)  # 1 = yes, 0 = no
@@ -159,12 +144,9 @@ sample['cancer_9'] = np.select(condlist=[(sample['hedbwca'] == 5) | (sample['hed
 sample['cancer_9'].value_counts(dropna=False)
 
 sample['HEEverCA'].value_counts(dropna=False)  # 1 = yes, 2 = no
-sample['new_cancer'] = np.select(condlist=[sample['cancer_9'] == 1,
-                                           (sample['cancer_9'] == 0) & (sample['HEEverCA'] == 1),
-                                           (sample['cancer_9'] == 0) & (sample['HEEverCA'] == 2)],
-                                 choicelist=[0, 1, 0],
-                                 default=np.nan)
-sample['new_cancer'].value_counts(dropna=False)
+sample['cancer_10'] = np.select(condlist=[sample['HEEverCA'] == 1, sample['HEEverCA'] == 2],
+                                choicelist=[1, 0],
+                                default=np.nan)  # 1 = yes, 0 = no
 
 # mental health
 sample['psceda'].value_counts(dropna=False)
@@ -197,14 +179,7 @@ sample['cesd_b_10'] = np.select(condlist=[sample['cesd_10'] >= 3, sample['cesd_1
                                 default=0)
 sample['cesd_b_10'].value_counts(dropna=False)
 
-sample['new_cesd'] = np.select(condlist=[sample['cesd_b_9'] == 1,
-                                         (sample['cesd_b_9'] == 0) & (sample['cesd_b_10'] == 1),
-                                         (sample['cesd_b_9'] == 0) & (sample['cesd_b_10'] == 0)],
-                               choicelist=[0, 1, 0],
-                               default=np.nan)
-sample['new_cesd'].value_counts(dropna=False)
-
-########## Controls (used for matching)
+########## Controls (used for DiD + controls)
 # employment status
 sample['dhwork'].value_counts(dropna=False)  # 1 = in paid employment, 2 = no
 sample['employ_status_9'] = np.select(condlist=[sample['dhwork'] == 1, sample['dhwork'] == 2],
@@ -391,7 +366,7 @@ sample['total_income_bu_10'].value_counts(dropna=False)
 
 # deciles
 sample['total_income_bu_d_10'] = pd.qcut(sample['total_income_bu_10'], q=10, labels=False)
-sample['total_income_bu_d_10'].value_counts(dropna=False)
+sample['total_income_bu_d_10'].value_counts(dropna=False)  # 0 = lowest, 9 = highest
 
 # age
 sample['age'].value_counts(dropna=False)
@@ -400,12 +375,18 @@ sample['age_9'] = np.select(condlist=[sample['age'] == 99, sample['age'] >= 0],
                             default=np.nan)
 sample['age_9'].value_counts(dropna=False)
 
+sample['indager'].value_counts(dropna=False)
+sample['age_10'] = np.select(condlist=[sample['indager'] == -7, sample['indager'] >= 0],
+                             choicelist=[np.nan, sample['indager']],
+                             default=np.nan)
+
 # sex
 sample['sex'].value_counts(dropna=False)
 sample['sex_9'] = np.select(condlist=[sample['sex'] == 1, sample['sex'] == 2],
                             choicelist=[0, 1],
                             default=np.nan)  # 1 = female, 0 = male
 sample['sex_9'].value_counts(dropna=False)
+# time-invariant, so no need to create a wave 10 variable
 
 # ethnicity
 sample['nonwhite'].value_counts(dropna=False)
@@ -413,16 +394,24 @@ sample['ethnicity_9'] = np.select(condlist=[sample['nonwhite'] == 0, sample['non
                                   choicelist=[0, 1],
                                   default=np.nan)  # 1 = non-white, 0 = white
 sample['ethnicity_9'].value_counts(dropna=False)
+# time-invariant, so no need to create a wave 10 variable
 
 # marital status
-sample['marstat'].value_counts(dropna=False)  # categorical
-sample['marital_status_9'] = sample['marstat'].astype(str)
+sample['dimarr_9'].value_counts(dropna=False)  # categorical
+sample['marital_status_9'] = sample['dimarr_9'].astype(str)
+
+sample['dimarr_10'].value_counts(dropna=False)
+sample['marital_status_10'] = sample['dimarr_10'].astype(str)
 
 ### cognitive function
 # memory
 sample['cfmetm'].value_counts(dropna=False)
 sample['memory_9'] = np.where(sample['cfmetm'] > 0, sample['cfmetm'], np.nan)  # 1 = excellent, 5 = poor
 sample['memory_9'].value_counts(dropna=False)
+
+sample['CfMetM'].value_counts(dropna=False)
+sample['memory_10'] = np.where(sample['CfMetM'] < 0, np.nan, sample['CfMetM'])  # 1 = excellent, 5 = poor
+sample['memory_10'].value_counts(dropna=False)
 
 # numeracy
 numeracy_list_9 = ['num_a_9', 'num_b_9', 'num_c_9', 'num_d_9', 'num_e_9']
@@ -449,6 +438,30 @@ sample['num_e_9'] = np.select(condlist=[sample['cfsve'] == 65, sample['cfsve'] <
 sample['numeracy_9'] = sample[numeracy_list_9].sum(axis=1, min_count=1)  # 0 = least numerate, 5 = most numerate
 sample['numeracy_9'].value_counts(dropna=False)
 
+numeracy_list_10 = ['num_a_10', 'num_b_10', 'num_c_10', 'num_d_10', 'num_e_10']
+sample['CfSvA'].value_counts(dropna=False)
+sample['num_a_10'] = np.select(condlist=[sample['CfSvA'] == 93, sample['CfSvA'] < 0],
+                               choicelist=[1, np.nan],
+                               default=0)
+sample['CfSvB'].value_counts(dropna=False)
+sample['num_b_10'] = np.select(condlist=[sample['CfSvB'] == 86, sample['CfSvB'] < 0],
+                               choicelist=[1, np.nan],
+                               default=0)
+sample['CfSvC'].value_counts(dropna=False)
+sample['num_c_10'] = np.select(condlist=[sample['CfSvC'] == 79, sample['CfSvC'] < 0],
+                               choicelist=[1, np.nan],
+                               default=0)
+sample['CfSvD'].value_counts(dropna=False)
+sample['num_d_10'] = np.select(condlist=[sample['CfSvD'] == 72, sample['CfSvD'] < 0],
+                               choicelist=[1, np.nan],
+                               default=0)
+sample['CfSvE'].value_counts(dropna=False)
+sample['num_e_10'] = np.select(condlist=[sample['CfSvE'] == 65, sample['CfSvE'] < 0],
+                               choicelist=[1, np.nan],
+                               default=0)
+sample['numeracy_10'] = sample[numeracy_list_10].sum(axis=1, min_count=1)  # 0 = least numerate, 5 = most numerate
+sample['numeracy_10'].value_counts(dropna=False)
+
 # comprehension (not available in wave 9)
 
 ### educational attainment
@@ -456,11 +469,13 @@ sample['numeracy_9'].value_counts(dropna=False)
 sample['edend'].value_counts(dropna=False)  # 1 should be removed as it does not make sense in ELSA
 sample['edu_age_9'] = np.where(sample['edend'] >= 2, sample['edend'], np.nan)
 sample['edu_age_9'].value_counts(dropna=False)  # 8 = 19 or over, 2 = never went to school
+# time-invariant, so no need to create a wave 10 variable
 
 # highest qualification
 sample['edqual'].value_counts(dropna=False)  # categorical
 sample['edu_qual_9'] = np.where(sample['edqual'] >= 1, sample['edqual'], np.nan)
 sample['edu_qual_9'].value_counts(dropna=False)
+# time-invariant, so no need to create a wave 10 variable
 
 ### deprivation
 sample['ndepriv'].value_counts(dropna=False)  # 0 = least deprived, 9 = most deprived
@@ -468,6 +483,20 @@ sample['n_deprived_9'] = np.select(condlist=[sample['ndepriv'] == -1, sample['nd
                                    choicelist=[0, sample['ndepriv']],
                                    default=np.nan)
 sample['n_deprived_9'].value_counts(dropna=False)
+
+deprive_list_10 = ['exrelefo_10', 'exreleme_10', 'exreleou_10', 'exrelede_10', 'exreleel_10', 'exrelefa_10', 'exrelepr_10', 'exreleho_10', 'exreletr_10']
+sample['EXRela'].value_counts(dropna=False)
+
+pd.crosstab(sample['EXRela'], sample['exrelefo_10'], dropna=False)
+# respondents with EXRela == 1 were not asked about deprivation (hence coded as -1), but I assume they are not deprived
+sample[deprive_list_10] = sample[deprive_list_10].where(sample['EXRela'] != 1, other=0)
+
+# remove NAs
+sample[deprive_list_10] = sample[deprive_list_10].where(sample[deprive_list_10] >= 0, other=np.nan)
+
+# count the number of deprived items
+sample['n_deprived_10'] = sample[deprive_list_10].sum(axis=1, min_count=1)  # 0 = least deprived, 9 = most deprived
+sample['n_deprived_10'].value_counts(dropna=False)
 
 ########## Save data
 sample.to_csv(derived_path / 'wave_910_cleaned.csv', index=False)

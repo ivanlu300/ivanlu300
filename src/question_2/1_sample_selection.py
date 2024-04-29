@@ -36,6 +36,7 @@ main_9_var = ['idauniq', 'w9scout',
               'cahha', 'askinst',  # sample selection
               'hehelf',  # self-reported health
               'wpdes', 'dhwork',  # employment status
+              'dimarr',  # marital status
               'psceda', 'pscedb', 'pscedc', 'pscedd', 'pscede', 'pscedf', 'pscedg', 'pscedh',  # ces-d
               'hobb', 'scint'] + \
              ['scinddt', 'scindlt', 'scindtb', 'scindph', 'scind95', 'scind96'] + \
@@ -50,7 +51,7 @@ main_9_var = ['idauniq', 'w9scout',
              ['cflitb', 'cflitc', 'cflitd', 'cflite'] + \
              ['cfsva', 'cfsvb', 'cfsvc', 'cfsvd', 'cfsve']
 
-ifs_9_var = ['idauniq', 'age', 'sex', 'nonwhite', 'marstat', 'edend', 'edqual', 'ndepriv']
+ifs_9_var = ['idauniq', 'age', 'sex', 'nonwhite', 'edend', 'edqual', 'ndepriv']
 
 financial_9_var = ['idauniq', 'eqtotinc_bu_s', 'yq10_bu_s']  # BU equivalised total income, and its decile
 
