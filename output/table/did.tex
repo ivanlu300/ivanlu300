@@ -1,0 +1,55 @@
+%! Author = ivanlu
+%! Date = 2024/4/30
+
+% Preamble
+\documentclass[11pt]{article}
+
+% Packages
+\usepackage{amsmath}
+\usepackage{booktabs}
+\usepackage{threeparttable}
+
+% Document
+\begin{document}
+
+    \begin{table}[h!]
+        \centering
+        \caption{Results of the DiD estimation}
+        \label{tab:did}
+        \begin{threeparttable}
+            \begin{tabular}{llc}
+                \toprule
+                Outcome & Description & DiD \\
+                \midrule
+                Self-reported health & 1 = excellent, 5 = poor & -0.010 \\
+                &  & [-0.216] \\
+                & & \\
+                Physical health & 1 = yes, 0 = no & \\
+                High blood pressure &  & -0.018 \\
+                &  & [-0.722] \\
+                High cholesterol &  & 0.007 \\
+                &  & [0.285] \\
+                Diabetes &  & -0.000 \\
+                &  & [-0.007] \\
+                Asthma &  & -0.006 \\
+                &  & [-0.319] \\
+                Arthritis &  & 0.009 \\
+                &  & [0.372] \\
+                Cancer &  & \textbf{-0.045}** \\
+                &  & [-2.746] \\
+                & & \\
+                Mental health & & \\
+                CES-D items & 0 = no symptom, 8 = all symptoms & -0.003 \\
+                &  & [-0.035] \\
+                CES-D diagnosis & 1 = yes, 0 = no & -0.019 \\
+                &  & [-1.051] \\
+                \bottomrule
+            \end{tabular}
+            \begin{tablenotes}
+                \footnotesize
+                \item Notes: *** $p < 0.001$, ** $p < 0.01$, * $p < 0.05$. t-statistics are reported in square brackets.
+            \end{tablenotes}
+        \end{threeparttable}
+    \end{table}
+
+\end{document}
