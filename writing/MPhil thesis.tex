@@ -26,13 +26,17 @@
 \documentclass[a4paper,nobind]{ociamthesis} 
 
 
+%%%%% DATE FORMAT SETUP
+\usepackage{datetime}
+\newdateformat{specialdate}{\THEDAY\ \monthname[\THEMONTH]\ \THEYEAR}
+
 
 %%%%% SELECT YOUR DRAFT OPTIONS
 % Three options going on here; use in any combination.  But remember to turn the first two off before
 % generating a PDF to send to the printer!
 
 % This adds a "DRAFT" footer to every normal page.  (The first page of each chapter is not a "normal" page.)
-\fancyfoot[C]{\emph{DRAFT Printed on \today}}  
+\fancyfoot[C]{\emph{DRAFT Printed on \specialdate\today}}  
 
 % This highlights (in blue) corrections marked with (for words) \mccorrect{blah} or (for whole
 % paragraphs) \begin{mccorrection} . . . \end{mccorrection}.  This can be useful for sending a PDF of
@@ -48,12 +52,12 @@
 % Either way, you'll have to choose and configure an appropriate bibliography format...
 
 % The science-type option: numerical in-text citation with references in order of appearance.
-\usepackage[style=numeric-comp, sorting=none, backend=biber, doi=false, isbn=false]{biblatex}
-\newcommand*{\bibtitle}{References}
+% \usepackage[style=numeric-comp, sorting=none, backend=biber, doi=false, isbn=false]{biblatex}
+% \newcommand*{\bibtitle}{References}
 
 % The humanities-type option: author-year in-text citation with an alphabetical works cited.
-%\usepackage[style=authoryear, sorting=nyt, backend=biber, maxcitenames=2, useprefix, doi=false, isbn=false]{biblatex}
-%\newcommand*{\bibtitle}{Works Cited}
+\usepackage[style=apa, backend=biber]{biblatex}
+\newcommand*{\bibtitle}{Bibliography}
 
 % This makes the bibliography left-aligned (not 'justified') and slightly smaller font.
 \renewcommand*{\bibfont}{\raggedright\small}
@@ -80,11 +84,11 @@
 \wordcount{28,815}
 
 % Uncomment the following line if your degree also includes exams (eg most masters):
-%\renewcommand{\submittedtext}{Submitted in partial completion of the}
+\renewcommand{\submittedtext}{Submitted in partial completion of the}
 % Your full degree name.
 \degree{Master of Philosophy in Sociology and Demography}
 % Term and year of submission, or date if your board requires (eg most masters)
-\degreedate{7th June 2024}
+\degreedate{\specialdate\today}
 
 
 %%%%% YOUR OWN PERSONAL MACROS
@@ -204,7 +208,7 @@
 %% APPENDICES %% 
 % Starts lettered appendices, adds a heading in table of contents, and adds a
 %    page that just says "Appendices" to signal the end of your main text.
-\startappendices
+% \startappendices
 % Add or remove any appendices you'd like here:
 \include{text/appendix-1}
 
