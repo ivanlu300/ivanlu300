@@ -13,10 +13,10 @@ table_path = Path().resolve().parents[1] / 'output' / 'table'
 main_10 = pd.read_csv(derived_path / 'wave_10_pca.csv')
 
 # Treatment
-main_10['PC1_b'].value_counts(dropna=False)  # 1: 2311, 0: 1664, NaN: 42
+main_10['PC1_b'].value_counts(dropna=False)  # 1: 1988, 0: 1987, NaN: 42
 
 # Descriptive statistics
-desc_vars = ['srh', 'high_bp', 'high_chol', 'diabetes', 'asthma', 'arthritis', 'cancer', 'cesd', 'cesd_b',
+desc_vars = ['srh', 'high_bp', 'high_chol', 'diabetes', 'asthma', 'arthritis', 'cancer', 'cesd_b',
              'age', 'sex', 'ethnicity', 'edu_age', 'employ_status', 'total_income_bu_d', 'n_deprived', 'memory', 'numeracy', 'comprehension']
 
 # descriptive statistics by treatment status for non-categorical variables
@@ -41,7 +41,6 @@ desc_df.rename(index={'srh': 'Self-reported health',
                       'asthma': 'Asthma',
                       'arthritis': 'Arthritis',
                       'cancer': 'Cancer',
-                      'cesd': 'CES-D items',
                       'cesd_b': 'CES-D diagnosis',
                       'age': 'Age',
                       'sex': 'Sex',
@@ -61,9 +60,9 @@ desc_df.rename(index={'srh': 'Self-reported health',
                       '6.0': 'Foreign/other qualification',
                       '7.0': 'No qualification',
                       'employ_status': 'Employment status',
-                      'total_income_bu_d': 'Decile of total income',
+                      'total_income_bu_d': 'Decile of household income',
                       'n_deprived': 'Deprivation index',
-                      'memory': 'Self-reported memory',
+                      'memory': 'Memory',
                       'numeracy': 'Numeracy index',
                       'comprehension': 'Comprehension index'},
                inplace=True)

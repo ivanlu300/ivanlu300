@@ -1,7 +1,7 @@
 import pandas as pd
 import numpy as np
 from pathlib import Path
-from sspipe import p, px
+from sspipe import p
 
 # Set up paths
 main_path = Path().resolve().parents[2] / 'Data' / 'elsa_10' / 'tab'
@@ -40,6 +40,9 @@ reason_list = [f'SCINNO0{number}' for number in range(1, 10)]
 main_10['SCINNO06'].value_counts(dropna=False)
 main_10[reason_list] = main_10[reason_list].where(main_10[reason_list] >= 0, other=np.nan)  # 1 = yes, 0 = no
 main_10['SCINNO05'].value_counts(dropna=False)
+
+pd.crosstab(main_10['Heill'], main_10['Helim'], dropna=False)
+main_10['HeFunc'].value_counts(dropna=False)
 
 # Outcome - self-reported health
 main_10['Hehelf'].value_counts(dropna=False)  # 1 = excellent, 5 = poor

@@ -81,8 +81,8 @@ main_10 = main_10.merge(digital_10[['idauniq', 'PC1']], on='idauniq', how='left'
 main_10['PC1'].value_counts(dropna=False)
 
 # binary PC1
-main_10['PC1_b'] = np.select(condlist=[main_10['PC1'] < np.nanmean(main_10['PC1']),
-                                       main_10['PC1'] >= np.nanmean(main_10['PC1'])],
+main_10['PC1_b'] = np.select(condlist=[main_10['PC1'] < np.nanmedian(main_10['PC1']),
+                                       main_10['PC1'] >= np.nanmedian(main_10['PC1'])],
                              choicelist=[1, 0],
                              default=np.nan)  # 1 = high digital literacy, 0 = low digital literacy
 main_10['PC1_b'].value_counts(dropna=False)

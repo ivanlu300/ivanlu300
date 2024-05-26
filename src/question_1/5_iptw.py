@@ -18,12 +18,15 @@ main_10 = pd.read_csv(derived_path / 'wave_10_pca.csv')
 main_10['SCINNO05'].value_counts(dropna=False)  # NAs due to refused
 main_10['SCINNO06'].value_counts(dropna=False)
 
-sample = main_10.loc[(main_10['SCINNO05'] != 1) & (main_10['SCINNO06'] != 1), :]
+sample = main_10.loc[(main_10['SCINNO05'] != 1) & (main_10['SCINNO06'] != 1), :]  # N = 3963
+
+main_10['HeFunc'].value_counts(dropna=False)  # remove respondents with mobility limitation
+sample = sample.loc[sample['HeFunc'] != 4, :]  # N = 3822
 
 ########## Treatment: digital literacy
 # Drop NAs
 sample_literacy = sample.dropna(subset=['PC1_b', 'total_income_bu_d', 'age', 'sex', 'ethnicity', 'edu_age', 'edu_qual', 'n_deprived', 'employ_status', 'marital_status', 'memory', 'numeracy', 'comprehension'])
-sample_literacy['PC1_b'].value_counts(dropna=False)  # 1: 2113, 0: 1447
+sample_literacy['PC1_b'].value_counts(dropna=False)  # 1: 1801, 0: 1640
 
 # logit model
 logit_literacy = smf.logit('PC1_b ~ total_income_bu_d + age + sex + ethnicity + edu_age + C(edu_qual) + n_deprived + employ_status + C(marital_status) + memory + numeracy + comprehension',
@@ -70,11 +73,11 @@ literacy_ate['Digital literacy'] = literacy_ate['Digital literacy'] | p(round, 3
 
 # Add * to indicate statistical significance
 for i in np.arange(0, literacy_ate.shape[0], 2):
-    if abs(literacy_ate.loc[i, 'p_literacy']) <= 0.001:
+    if abs(literacy_ate.loc[i, 'p_literacy']) <= 0.01:
         literacy_ate.loc[i, 'Digital literacy'] = str(literacy_ate.loc[i, 'Digital literacy']) + '***'
-    elif (abs(literacy_ate.loc[i, 'p_literacy']) <= 0.01) & (abs(literacy_ate.loc[i, 'p_literacy']) > 0.001):
+    elif (abs(literacy_ate.loc[i, 'p_literacy']) <= 0.05) & (abs(literacy_ate.loc[i, 'p_literacy']) > 0.001):
         literacy_ate.loc[i, 'Digital literacy'] = str(literacy_ate.loc[i, 'Digital literacy']) + '**'
-    elif (abs(literacy_ate.loc[i, 'p_literacy']) <= 0.05) & (abs(literacy_ate.loc[i, 'p_literacy']) > 0.01):
+    elif (abs(literacy_ate.loc[i, 'p_literacy']) <= 0.1) & (abs(literacy_ate.loc[i, 'p_literacy']) > 0.01):
         literacy_ate.loc[i, 'Digital literacy'] = str(literacy_ate.loc[i, 'Digital literacy']) + '*'
 
 # Add square brackets to t-values

@@ -18,6 +18,7 @@ main_var = (['idauniq', 'W10scout',
             ['SCINA'] + [f'SCINA0{number}' for number in range(1, 10)] + [f'SCINA{number}' for number in
                                                                           range(10, 22)] + \
             ['SCINNO'] + [f'SCINNO0{number}' for number in range(1, 10)] + \
+            ['Heill', 'Helim', 'HeFunc'] + \
             ['HEHaveBP', 'HEHaveHC', 'HEEverDI',  # (blood pressure, cholesterol still has, diabetes ever diagnosed)
              'HEHaveAS', 'HEHaveAR', 'HEHaveCA'] + \
             ['CaFam'] + [f'CaFam{number}' for number in range(2, 26)] + \
