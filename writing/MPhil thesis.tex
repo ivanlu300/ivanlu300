@@ -26,9 +26,10 @@
 \documentclass[a4paper,nobind]{ociamthesis} 
 
 
-%%%%% DATE FORMAT SETUP
+%%%%% ADD ADDITIONAL PACKAGES HERE
 \usepackage{datetime}
 \newdateformat{specialdate}{\THEDAY\ \monthname[\THEMONTH]\ \THEYEAR}
+\usepackage{threeparttable}
 
 
 %%%%% SELECT YOUR DRAFT OPTIONS
@@ -203,6 +204,7 @@
 \flushbottom
 \include{text/ch1-intro}
 \include{text/ch2-litreview}
+\include{text/ch4-strategy}
 
 
 %% APPENDICES %% 
