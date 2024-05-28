@@ -14,7 +14,7 @@
 
 \begin{table}[h!]
     \centering
-    \caption{Hardware --- devices used to access the Internet}
+    \caption{Hardware --- Devices used to access the Internet}
     \label{tab:hardware}
     \begin{tabular}{ll}
         \toprule
@@ -33,7 +33,7 @@
 
 \begin{table}[h!]
     \centering
-    \caption{Software --- online activities}
+    \caption{Software --- Activities engaged in online}
     \label{tab:software}
     \begin{tabular}{ll}
         \toprule
@@ -137,6 +137,29 @@
 \end{figure}
 
 
+
+\begin{table}[h!]
+    \centering
+    \caption{Deprivation questions --- Activities stopped by having too little money}
+    \label{tab:deprivation}
+    \begin{tabularx}{\textwidth}{lX}
+        \toprule 
+        Item & Description \\
+        \midrule
+        1 & Buy your first choices of food items \\
+        2 & Have family and friends round for a drink or meal \\
+        3 & Have an outfit to wear for social or family occasions \\
+        4 & Keep your home in a reasonable state of decoration \\
+        5 & Replace or repair broken electrical goods \\
+        6 & Pay for fares or other transport costs to get to and from places you want to go \\
+        7 & Buy presents for friends or family once a year \\
+        8 & Take the sorts of holidays you want \\
+        9 & Treat yourself from time to time \\
+        \bottomrule
+    \end{tabularx}
+\end{table}
+
+
 \begin{table}[h!]
     \centering
     \caption{Comprehension ability questions}
@@ -145,10 +168,79 @@
         \toprule
         Item & Description \\
         \midrule
-        1 & What is the maximum number of days you may take this medicine? \\
-        2 & List three situations for which you should consult a doctor. \\
-        3 & List one condition for which you might take the Medco tablet. \\
-        4 & List one condition for which you should not take the Medco tablet. \\
+        1 & What is the maximum number of days you may take this medicine \\
+        2 & List three situations for which you should consult a doctor \\
+        3 & List one condition for which you might take the Medco tablet \\
+        4 & List one condition for which you should not take the Medco tablet \\
         \bottomrule
     \end{tabular}
 \end{table}
+
+
+\section{Identification strategy - RQ1}
+
+\begin{equation}
+    \label{eq:ate}
+    ATE = E(Y_i^1) - E(Y_i^0)
+\end{equation}
+
+
+\subsection{Addressing simultaneity bias}
+
+
+\begin{table}[h!]
+    \centering
+    \caption{Reasons why respondents do not use the Internet more}
+    \label{tab:reverse_causality}
+    \begin{tabular}{ll}
+        \toprule
+        Item & Reason \\
+        \midrule
+        1 & IT skills are not good enough \\
+        2 & Don't trust the internet (fraud, sharing personal data) \\
+        3 & Don't have good enough access to broadband \\
+        4 & Don't have access to good enough equipment \\
+        5 & Vision is not good enough to use the equipment \\ 
+        6 & Health problems stop me from using the equipment \\ 
+        7 & No reason to use it more \\
+        8 & Takes too much time \\
+        9 & None of the above \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+
+\subsection{Addressing omitted variable bias}
+
+
+\begin{equation}
+    \label{eq:logit}
+    Logit(D) \sim \textbf{X}
+\end{equation}
+
+\begin{equation}
+    \label{eq:propensity_score}
+    \textnormal{Propensity score} = \hat{P}(D = 1 | \textbf{X})
+\end{equation}
+
+
+\begin{equation}
+    \label{eq:raw_weights}
+    \begin{aligned}
+        \textnormal{For } D &= 1: \textnormal{weight} = \frac{1}{\hat{P}(D = 1 | \textbf{X})} \\
+        \textnormal{For } D &= 0: \textnormal{weight} = \frac{1}{1 - \hat{P}(D = 1 | \textbf{X})}
+    \end{aligned}
+\end{equation}
+
+
+
+\begin{equation}
+    \label{eq:stabilisied_weights}
+    \begin{aligned}
+        \textnormal{For } D &= 1: \textnormal{weight} = \frac{E[D = 1]}{\hat{P}(D = 1 | \textbf{X})} \\
+        \textnormal{For } D &= 0: \textnormal{weight} = \frac{E[D = 0]}{1 - \hat{P}(D = 1 | \textbf{X})}
+    \end{aligned}
+\end{equation}
+
+
+\section{Robustness checks - RQ1}
