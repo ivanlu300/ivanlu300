@@ -214,12 +214,12 @@
 
 
 \begin{equation}
-    \label{eq:logit}
+    \label{eq:logit_rq1}
     Logit(D) \sim \textbf{X}
 \end{equation}
 
 \begin{equation}
-    \label{eq:propensity_score}
+    \label{eq:propensity_score_rq1}
     \textnormal{Propensity score} = \hat{P}(D = 1 | \textbf{X})
 \end{equation}
 
@@ -244,3 +244,30 @@
 
 
 \section{Robustness checks - RQ1}
+
+
+
+\section{Identification strategy - RQ2}
+
+
+\subsection{Addressing contamination of group assignment}
+
+
+
+\subsection{Addressing possible violations of parallel trends assumption}
+
+\begin{equation}
+    \label{eq:logit_rq2}
+    Logit(D) \sim \textbf{X}
+\end{equation}
+
+\begin{equation}
+    \label{eq:propensity_score_rq2}
+    \textnormal{Propensity score} = \hat{P}(D = 1 | \textbf{X})
+\end{equation}
+
+
+\begin{equation}
+    \label{eq:did}
+    \delta_{DiD} = \sum_{i=1}^{n} \left( (Y_{i}^{10high} - Y_{i}^{9high}) - (Y_{i}^{10low} - Y_{i}^{9low}) \right)
+\end{equation}
