@@ -179,7 +179,27 @@ sample['cesd_b_10'] = np.select(condlist=[sample['cesd_10'] >= 3, sample['cesd_1
                                 default=0)
 sample['cesd_b_10'].value_counts(dropna=False)
 
-########## Controls (used for DiD + controls)
+# anxiety disorder
+pd.crosstab(sample['hepsyan_9'], sample['hepsyan_10'])
+sample['anxiety_9'] = np.select(condlist=[sample['hepsyan_9'] == 1, sample['hepsyan_9'] == 0, sample['hepsyan_9'] == -1],
+                                choicelist=[1, 0, 0],
+                                default=np.nan)
+
+sample['anxiety_10'] = np.select(condlist=[sample['hepsyan_10'] == 1, sample['hepsyan_10'] == 0, sample['hepsyan_10'] == -1],
+                                 choicelist=[1, 0, 0],
+                                 default=np.nan)
+
+# mood swings
+pd.crosstab(sample['hepsymo_9'], sample['hepsymo_10'])
+sample['mood_9'] = np.select(condlist=[sample['hepsymo_9'] == 1, sample['hepsymo_9'] == 0, sample['hepsymo_9'] == -1],
+                             choicelist=[1, 0, 0],
+                             default=np.nan)
+
+sample['mood_10'] = np.select(condlist=[sample['hepsymo_10'] == 1, sample['hepsymo_10'] == 0, sample['hepsymo_10'] == -1],
+                              choicelist=[1, 0, 0],
+                              default=np.nan)
+
+########## Controls (used for PSM + DiD)
 # employment status
 sample['dhwork'].value_counts(dropna=False)  # 1 = in paid employment, 2 = no
 sample['employ_status_9'] = np.select(condlist=[sample['dhwork'] == 1, sample['dhwork'] == 2],
@@ -496,7 +516,6 @@ sample[deprive_list_10] = sample[deprive_list_10].where(sample[deprive_list_10] 
 
 # count the number of deprived items
 sample['n_deprived_10'] = sample[deprive_list_10].sum(axis=1, min_count=1)  # 0 = least deprived, 9 = most deprived
-sample['n_deprived_10'].value_counts(dropna=False)
 
 ########## Save data
 sample.to_csv(derived_path / 'wave_910_cleaned.csv', index=False)

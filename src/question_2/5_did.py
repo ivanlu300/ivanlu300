@@ -6,6 +6,9 @@ from sspipe import p
 
 import statsmodels.formula.api as smf
 import linearmodels as plm
+from psmpy import PsmPy
+from scipy.stats import ttest_1samp
+from sklearn.neighbors import NearestNeighbors
 
 # Set up paths
 main_path = Path().resolve().parents[2] / 'Data' / 'elsa_10' / 'tab'
@@ -20,109 +23,222 @@ sample = pd.read_csv(derived_path / 'wave_910_pca.csv')
 pd.crosstab(sample['PC1_b_9'], sample['PC1_b_10'])
 sample_910 = sample.loc[sample['PC1_b_9'] == sample['PC1_b_10'], :]  # N = 2881
 sample_910['group'] = sample_910['PC1_b_9']
-sample_910['group'].value_counts(dropna=False)  # 1: 1449, 0: 1432
+sample_910['group'].value_counts(dropna=False)  # 1: 565, 0: 658
 
 sample_did = sample_910[['idauniq', 'group',
                          'srh_9', 'srh_10',
                          'high_bp_9', 'high_bp_10', 'high_chol_9', 'high_chol_10', 'diabetes_9', 'diabetes_10',
                          'asthma_9', 'asthma_10', 'arthritis_9', 'arthritis_10', 'cancer_9', 'cancer_10',
-                         'cesd_9', 'cesd_10', 'cesd_b_9', 'cesd_b_10',
-                         'employ_status_9', 'employ_status_10', 'total_income_bu_d_9', 'total_income_bu_d_10',
-                         'age_9', 'age_10', 'sex_9', 'ethnicity_9', 'marital_status_9', 'marital_status_10',
-                         'memory_9', 'memory_10', 'numeracy_9', 'numeracy_10', 'edu_age_9', 'edu_qual_9',
-                         'n_deprived_9', 'n_deprived_10']]
+                         'cesd_9', 'cesd_10', 'anxiety_9', 'anxiety_10', 'mood_9', 'mood_10',
+                         'employ_status_9', 'total_income_bu_d_9',
+                         'age_9', 'sex_9', 'ethnicity_9', 'marital_status_9',
+                         'memory_9', 'numeracy_9', 'edu_age_9', 'edu_qual_9', 'n_deprived_9']].dropna()
 
-########## Transform the data into long format
-sample_did_long = pd.wide_to_long(sample_did,
-                                  i='idauniq',
-                                  j='wave',
-                                  stubnames=['srh', 'high_bp', 'high_chol', 'diabetes', 'asthma', 'arthritis', 'cancer',
-                                             'cesd', 'cesd_b', 'employ_status', 'total_income_bu_d', 'age',
-                                             'marital_status', 'memory', 'numeracy', 'n_deprived'],
-                                  sep='_',
-                                  suffix='\\d+'
-                                  ).reset_index()
+sample_did['group'].value_counts(dropna=False)  # 1: 535, 0: 619
 
-did_srh = smf.ols(
-    'srh ~ group * C(wave) + employ_status + total_income_bu_d + C(marital_status) + memory + numeracy + n_deprived + age + sex_9 + ethnicity_9 + edu_age_9 + C(edu_qual_9)',
-    data=sample_did_long).fit()
-did_srh.summary()
+####################
+# Another method of estimating propensity score
+logit_ps = smf.logit('group ~ total_income_bu_d_9 + employ_status_9 + age_9 + sex_9 + ethnicity_9 + C(marital_status_9) + memory_9 + numeracy_9 + edu_age_9 + C(edu_qual_9) + n_deprived_9',
+                     data=sample_did).fit()
 
-did_high_bp = smf.ols(
-    'high_bp ~ group * C(wave) + employ_status + total_income_bu_d + C(marital_status) + memory + numeracy + n_deprived + age + sex_9 + ethnicity_9 + edu_age_9 + C(edu_qual_9)',
-    data=sample_did_long).fit()
-did_high_bp.summary()
+sample_did['ps'] = logit_ps.predict(sample_did)
 
-did_high_chol = smf.ols(
-    'high_chol ~ group * C(wave) + employ_status + total_income_bu_d + C(marital_status) + memory + numeracy + n_deprived + age + sex_9 + ethnicity_9 + edu_age_9 + C(edu_qual_9)',
-    data=sample_did_long).fit()
-did_high_chol.summary()  # positive
+# Perform matching
+# split the low and high group
+sample_did_low = sample_did.loc[sample_did['group'] == 0, :]
+sample_did_high = sample_did.loc[sample_did['group'] == 1, :]
 
-did_diabetes = smf.ols(
-    'diabetes ~ group * C(wave) + employ_status + total_income_bu_d + C(marital_status) + memory + numeracy + n_deprived + age + sex_9 + ethnicity_9 + edu_age_9 + C(edu_qual_9)',
-    data=sample_did_long).fit()
-did_diabetes.summary()
+# Nearest Neighbour Matching
+nn = NearestNeighbors(n_neighbors=1)
+nn.fit(sample_did_high[['ps']])
 
-did_asthma = smf.ols(
-    'asthma ~ group * C(wave) + employ_status + total_income_bu_d + C(marital_status) + memory + numeracy + n_deprived + age + sex_9 + ethnicity_9 + edu_age_9 + C(edu_qual_9)',
-    data=sample_did_long).fit()
-did_asthma.summary()
+# Find nearest neighbors for each control observation
+distances, indices = nn.kneighbors(sample_did_low[['ps']])
 
-did_arthritis = smf.ols(
-    'arthritis ~ group * C(wave) + employ_status + total_income_bu_d + C(marital_status) + memory + numeracy + n_deprived + age + sex_9 + ethnicity_9 + edu_age_9 + C(edu_qual_9)',
-    data=sample_did_long).fit()
-did_arthritis.summary()  # positive
+# Extract matched ids
+matched_ids = sample_did_high.iloc[indices.flatten()]['idauniq'].values
 
-did_cancer = smf.ols(
-    'cancer ~ group * C(wave) + employ_status + total_income_bu_d + C(marital_status) + memory + numeracy + n_deprived + age + sex_9 + ethnicity_9 + edu_age_9 + C(edu_qual_9)',
-    data=sample_did_long).fit()
-did_cancer.summary()  # only cancer is statistically significant
+# Create DataFrame of matches
+matches = pd.DataFrame({
+    'low_ID': sample_did_low['idauniq'].values,
+    'high_ID': matched_ids
+})
 
-did_cesd = smf.ols(
-    'cesd ~ group * C(wave) + employ_status + total_income_bu_d + C(marital_status) + memory + numeracy + n_deprived + age + sex_9 + ethnicity_9 + edu_age_9 + C(edu_qual_9)',
-    data=sample_did_long).fit()
-did_cesd.summary()
+# Loop to get results
+did_result = pd.DataFrame({'Outcome': ['Self-rated health', '', 'High blood pressure', '', 'High cholesterol', '',
+                                       'Diabetes', '', 'Asthma', '', 'Arthritis', '', 'Cancer', '', 'Depression score', '',
+                                       'Anxiety disorder', '', 'Mood swings', ''],
+                           'DiD': np.nan,
+                           'p_value': np.nan})
 
-did_cesd_b = smf.ols(
-    'cesd_b ~ group * C(wave) + employ_status + total_income_bu_d + C(marital_status) + memory + numeracy + n_deprived + age + sex_9 + ethnicity_9 + edu_age_9 + C(edu_qual_9)',
-    data=sample_did_long).fit()
-did_cesd_b.summary()
+outcome_list = ['srh', 'high_bp', 'high_chol', 'diabetes', 'asthma', 'arthritis', 'cancer', 'cesd', 'anxiety', 'mood']
 
-########## Using a for loop to save results in one table
-result_table = pd.DataFrame({'Outcome': ['Self-reported health', '', 'High blood pressure', '', 'High cholesterol', '',
-                                         'Diabetes', '', 'Asthma', '', 'Arthritis', '', 'Cancer', '', 'CES-D items', '',
-                                         'CES-D diagnosis', ''],
-                             'DiD': np.nan,
-                             'p_value': np.nan})
-outcome_list = ['srh', 'high_bp', 'high_chol', 'diabetes', 'asthma', 'arthritis', 'cancer', 'cesd', 'cesd_b']
+# Write a loop to estimate DiD for each outcome
+for j in range(len(outcome_list)):
+    did = []
+    for i in range(len(matches)):
+        did.append((sample_did.loc[sample_did['idauniq'] == matches['high_ID'][i], f'{outcome_list[j]}_10'].values[0] - sample_did.loc[sample_did['idauniq'] == matches['high_ID'][i], f'{outcome_list[j]}_9'].values[0])
+                   -
+                   (sample_did.loc[sample_did['idauniq'] == matches['low_ID'][i], f'{outcome_list[j]}_10'].values[0] - sample_did.loc[sample_did['idauniq'] == matches['low_ID'][i], f'{outcome_list[j]}_9'].values[0]))
 
-for i in outcome_list:
-    model = smf.ols(
-        f'{i} ~ group * C(wave) + employ_status + total_income_bu_d + C(marital_status) + memory + numeracy + n_deprived + age + sex_9 + ethnicity_9 + edu_age_9 + C(edu_qual_9)',
-        data=sample_did_long).fit()
+        # mean
+        did_result.iloc[j*2, 1] = np.mean(did)
 
-    result_table.loc[outcome_list.index(i) * 2, 'DiD'] = model.params['group:C(wave)[T.10]']
-    result_table.loc[outcome_list.index(i) * 2 + 1, 'DiD'] = model.tvalues['group:C(wave)[T.10]']
-    result_table.loc[outcome_list.index(i) * 2, 'p_value'] = model.pvalues['group:C(wave)[T.10]']
+        # t-test
+        t_stat, p_value = ttest_1samp(did, 0)
+        did_result.iloc[j*2, 2] = p_value
+        did_result.iloc[j*2 + 1, 1] = t_stat
 
-########## Improve the table format
-result_table['DiD'] = result_table['DiD'] | p(round, 3)
+##### Format
+# Round to 3 decimal places
+did_result['DiD'] = did_result['DiD'] | p(round, 3)
 
 # Add * to indicate statistical significance
-for i in np.arange(0, result_table.shape[0], 2):
-    if abs(result_table.loc[i, 'p_value']) <= 0.001:
-        result_table.loc[i, 'DiD'] = str(result_table.loc[i, 'DiD']) + '***'
-    elif (abs(result_table.loc[i, 'p_value']) <= 0.01) & (abs(result_table.loc[i, 'p_value']) > 0.001):
-        result_table.loc[i, 'DiD'] = str(result_table.loc[i, 'DiD']) + '**'
-    elif (abs(result_table.loc[i, 'p_value']) <= 0.05) & (abs(result_table.loc[i, 'p_value']) > 0.01):
-        result_table.loc[i, 'DiD'] = str(result_table.loc[i, 'DiD']) + '*'
+for i in np.arange(0, did_result.shape[0], 2):
+    if abs(did_result.iloc[i, 2]) <= 0.001:
+        did_result.iloc[i, 1] = str(did_result.iloc[i, 1]) + '***'
+    elif (abs(did_result.iloc[i, 2]) <= 0.01) & (abs(did_result.iloc[i, 2]) > 0.001):
+        did_result.iloc[i, 1] = str(did_result.iloc[i, 1]) + '**'
+    elif (abs(did_result.iloc[i, 2]) <= 0.05) & (abs(did_result.iloc[i, 2]) > 0.01):
+        did_result.iloc[i, 1] = str(did_result.iloc[i, 1]) + '*'
 
 # Add square brackets to t-values
-result_table['DiD'] = result_table['DiD'].astype(str)
-result_table.loc[result_table.index % 2 == 1, 'DiD'] = '[' + result_table['DiD'] + ']'
+did_result['DiD'] = did_result['DiD'].astype(str)
+did_result.loc[did_result.index % 2 == 1, 'DiD'] = '[' + did_result['DiD'] + ']'
 
 # Add a description column
-result_table['Description'] = [''] * result_table.shape[0]
+did_result['Description'] = [''] * did_result.shape[0]
 
 ########## LaTeX
-result_table[['Outcome', 'Description', 'DiD']].to_latex(index=False, float_format="%.3f") | p(print)
+did_result[['Outcome', 'Description', 'DiD']].to_latex(index=False, float_format="%.3f") | p(print)
+
+
+
+
+
+########## 5 Nearest Neighbours Matching
+sample_did_low = sample_did.loc[sample_did['group'] == 0, :]
+sample_did_high = sample_did.loc[sample_did['group'] == 1, :]
+
+# Nearest Neighbour Matching
+nn = NearestNeighbors(n_neighbors=5)
+nn.fit(sample_did_high[['ps']])
+
+# Find nearest neighbors for each control observation
+distances, indices = nn.kneighbors(sample_did_low[['ps']])
+
+# Create DataFrame of matches
+matches = pd.DataFrame({
+    'low_ID': np.repeat(sample_did_low['idauniq'].values, 5),
+    'high_ID': sample_did_high.iloc[indices.flatten(), 0].values
+})
+
+# Loop to get results
+did_result = pd.DataFrame({'Outcome': ['Self-rated health', '', 'High blood pressure', '', 'High cholesterol', '',
+                                       'Diabetes', '', 'Asthma', '', 'Arthritis', '', 'Cancer', '', 'Depressive symptoms', '',
+                                       'Anxiety disorder', '', 'Mood swings', ''],
+                           'DiD': np.nan,
+                           'p_value': np.nan})
+
+outcome_list = ['srh', 'high_bp', 'high_chol', 'diabetes', 'asthma', 'arthritis', 'cancer', 'cesd', 'anxiety', 'mood']
+
+# Write a loop to estimate DiD for each outcome
+for j in range(len(outcome_list)):
+    did = []
+    for i in range(len(matches)):
+        did.append((sample_did.loc[sample_did['idauniq'] == matches['high_ID'][i], f'{outcome_list[j]}_10'].values[0] - sample_did.loc[sample_did['idauniq'] == matches['high_ID'][i], f'{outcome_list[j]}_9'].values[0])
+                   -
+                   (sample_did.loc[sample_did['idauniq'] == matches['low_ID'][i], f'{outcome_list[j]}_10'].values[0] - sample_did.loc[sample_did['idauniq'] == matches['low_ID'][i], f'{outcome_list[j]}_9'].values[0]))
+
+        # mean
+        did_result.iloc[j*2, 1] = np.mean(did)
+
+        # t-test
+        t_stat, p_value = ttest_1samp(did, 0)
+        did_result.iloc[j*2, 2] = p_value
+        did_result.iloc[j*2 + 1, 1] = t_stat
+
+##### Format
+# Round to 3 decimal places
+did_result['DiD'] = did_result['DiD'] | p(round, 3)
+
+# Add * to indicate statistical significance
+for i in np.arange(0, did_result.shape[0], 2):
+    if abs(did_result.iloc[i, 2]) <= 0.001:
+        did_result.iloc[i, 1] = str(did_result.iloc[i, 1]) + '***'
+    elif (abs(did_result.iloc[i, 2]) <= 0.01) & (abs(did_result.iloc[i, 2]) > 0.001):
+        did_result.iloc[i, 1] = str(did_result.iloc[i, 1]) + '**'
+    elif (abs(did_result.iloc[i, 2]) <= 0.05) & (abs(did_result.iloc[i, 2]) > 0.01):
+        did_result.iloc[i, 1] = str(did_result.iloc[i, 1]) + '*'
+
+# Add square brackets to t-values
+did_result['DiD'] = did_result['DiD'].astype(str)
+did_result.loc[did_result.index % 2 == 1, 'DiD'] = '[' + did_result['DiD'] + ']'
+
+# Add a description column
+did_result['Description'] = [''] * did_result.shape[0]
+
+########## LaTeX
+did_result[['Outcome', 'Description', 'DiD']].to_latex(index=False, float_format="%.3f") | p(print)
+
+
+
+# ##### Estimate propensity score
+# psm = PsmPy(sample_did, treatment='group', indx='idauniq', exclude = ['srh_9', 'srh_10',
+#                                                                       'high_bp_9', 'high_bp_10', 'high_chol_9', 'high_chol_10', 'diabetes_9', 'diabetes_10',
+#                                                                       'asthma_9', 'asthma_10', 'arthritis_9', 'arthritis_10', 'cancer_9', 'cancer_10',
+#                                                                       'cesd_9', 'cesd_10', 'anxiety_9', 'anxiety_10', 'mood_9', 'mood_10',
+#                                                                       'marital_status_9', 'edu_qual_9'])
+#
+# psm.logistic_ps()
+#
+# ##### Perform KNN matching
+# psm.knn_matched(matcher='propensity_logit', replacement=False, caliper=None)
+#
+# nmixx = psm.matched_ids  # first column: high; second column: low
+#
+# sample_did.loc[sample_did['idauniq'] == nmixx['idauniq'][0], 'group'].values[0]  # 1
+# sample_did.loc[sample_did['idauniq'] == nmixx['matched_ID'][0], 'group'].values[0]  # 0
+#
+# ##### Calculate DiD
+# # create a dataframe to save the results
+# did_result = pd.DataFrame({'Outcome': ['Self-rated health', '', 'High blood pressure', '', 'High cholesterol', '',
+#                                        'Diabetes', '', 'Asthma', '', 'Arthritis', '', 'Cancer', '', 'Depressive symptoms', '',
+#                                        'Anxiety disorder', '', 'Mood swings', ''],
+#                            'DiD': np.nan,
+#                            'p_value': np.nan})
+#
+# outcome_list = ['srh', 'high_bp', 'high_chol', 'diabetes', 'asthma', 'arthritis', 'cancer', 'cesd', 'anxiety', 'mood']
+#
+# # Write a loop to estimate DiD for each outcome
+# for j in range(len(outcome_list)):
+#     did = []
+#     for i in range(len(nmixx)):
+#         did.append((sample_did.loc[sample_did['idauniq'] == nmixx['idauniq'][i], f'{outcome_list[j]}_10'].values[0] - sample_did.loc[sample_did['idauniq'] == nmixx['idauniq'][i], f'{outcome_list[j]}_9'].values[0])
+#                    -
+#                    (sample_did.loc[sample_did['idauniq'] == nmixx['matched_ID'][i], f'{outcome_list[j]}_10'].values[0] - sample_did.loc[sample_did['idauniq'] == nmixx['matched_ID'][i], f'{outcome_list[j]}_9'].values[0]))
+#
+#         # mean
+#         did_result.iloc[j*2, 1] = np.mean(did)
+#
+#         # t-test
+#         t_stat, p_value = ttest_1samp(did, 0)
+#         did_result.iloc[j*2, 2] = p_value
+#         did_result.iloc[j*2 + 1, 1] = t_stat
+#
+# ##### Format
+# # Round to 3 decimal places
+# did_result['DiD'] = did_result['DiD'] | p(round, 3)
+#
+# # Add * to indicate statistical significance
+# for i in np.arange(0, did_result.shape[0], 2):
+#     if abs(did_result.iloc[i, 2]) <= 0.001:
+#         did_result.iloc[i, 1] = str(did_result.iloc[i, 1]) + '***'
+#     elif (abs(did_result.iloc[i, 2]) <= 0.01) & (abs(did_result.iloc[i, 2]) > 0.001):
+#         did_result.iloc[i, 1] = str(did_result.iloc[i, 1]) + '**'
+#     elif (abs(did_result.iloc[i, 2]) <= 0.05) & (abs(did_result.iloc[i, 2]) > 0.01):
+#         did_result.iloc[i, 1] = str(did_result.iloc[i, 1]) + '*'
+#
+# # Add square brackets to t-values
+# did_result['DiD'] = did_result['DiD'].astype(str)
+# did_result.loc[did_result.index % 2 == 1, 'DiD'] = '[' + did_result['DiD'] + ']'

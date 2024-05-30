@@ -13,6 +13,7 @@ main_10_var = ['idauniq', 'W10scout',
                'Hehelf',  # self-reported health
                'WpDes', 'DhWork',  # employment status
                'PScedA', 'PScedB', 'PScedC', 'PScedD', 'PScedE', 'PScedF', 'PScedG', 'PScedH',  # ces-d
+               'hepsyan', 'hepsyde', 'hepsymo',  # mental health
                'HOBB', 'SCINT'] + \
               ['SCIND'] + [f'SCIND0{number}' for number in range(1, 6)] + \
               ['SCINA'] + [f'SCINA0{number}' for number in range(1, 10)] + [f'SCINA{number}' for number in
@@ -38,6 +39,7 @@ main_9_var = ['idauniq', 'w9scout',
               'wpdes', 'dhwork',  # employment status
               'dimarr',  # marital status
               'psceda', 'pscedb', 'pscedc', 'pscedd', 'pscede', 'pscedf', 'pscedg', 'pscedh',  # ces-d
+              'hepsyan', 'hepsyde', 'hepsymo',  # mental health
               'hobb', 'scint'] + \
              ['scinddt', 'scindlt', 'scindtb', 'scindph', 'scind95', 'scind96'] + \
              ['scinaem', 'scinacl', 'scinaed', 'scinahe', 'scinabk', 'scinash', 'scinasl', 'scinasn', 'scinact', 'scinanw', 'scinast', 'scinagm', 'scinajb', 'scinaps', 'scina95', 'scina96'] + \

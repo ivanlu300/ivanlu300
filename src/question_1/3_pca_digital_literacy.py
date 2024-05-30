@@ -40,13 +40,13 @@ pca_loadings = pd.DataFrame(
 
 ########## PC1 loadings
 pc1_loadings = pd.DataFrame({'Item': ['Frequency of using the Internet',
-                                      'desktop', 'laptop', 'tablet', 'smartphone', 'other',
+                                      'desktop', 'laptop', 'tablet', 'smartphone', 'other devices',
                                       'emails', 'video calls', 'finding information', 'finances', 'shopping', 'selling',
                                       'social networking', 'news', 'TV/radio', 'music', 'games', 'e-books',
                                       'job application', 'government services', 'checking travel times',
                                       'satellite navigation', 'buying public transport tickets', 'booking a taxi',
                                       'finding local amenities', 'controlling household appliances',
-                                      'none of the above'],
+                                      'no online activities'],
                              'Description': '',
                              'Loading': pca_loadings.iloc[0, :] | p(round, 3)
                              })

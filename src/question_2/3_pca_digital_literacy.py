@@ -1,6 +1,7 @@
 import pandas as pd
 import numpy as np
 import plotly.express as px
+from plotly.subplots import make_subplots
 from pathlib import Path
 from sspipe import p
 
@@ -43,11 +44,11 @@ pca_loadings_9 = pd.DataFrame(pca_digital_9.components_)
 # PC1 loadings
 pc1_loadings_9 = pd.DataFrame({'Item': ['Frequency of using the Internet',
                                         'desktop', 'laptop', 'tablet', 'smartphone', 'other',
-                                        'no device (do not access the Internet)',
+                                        'do not use any device',
                                         'emails', 'video calls', 'finding information (learning)',
                                         'finding information (health)', 'finances', 'shopping', 'selling',
                                         'social networking', 'creating content', 'news', 'music', 'games',
-                                        'job application', 'government services', 'other', 'none of the above'],
+                                        'job application', 'government services', 'other online activities', 'no online activities'],
                                'Description': '',
                                'Loading': pca_loadings_9.iloc[0, :] | p(round, 3)
                                })
@@ -68,8 +69,8 @@ fig_9.update_layout(
     yaxis=dict(tickmode='array', tickvals=list(np.arange(0, 0.30, 0.05))),
 )
 
-fig_9.write_image(figure_path / 'pca_screeplot_q2.png')
-fig_9.show()
+# fig_9.write_image(figure_path / 'pca_screeplot_w9_q2.png')
+# fig_9.show()
 
 # Extract PCA scores
 pca_scores_9 = pca_digital_9.transform(digital_9_scaled) | p(pd.DataFrame)
@@ -81,11 +82,11 @@ sample = sample.merge(digital_9[['idauniq', 'PC1_9']], on='idauniq', how='left')
 sample['PC1_9'].value_counts(dropna=False)
 
 # binary PC1
-sample['PC1_b_9'] = np.select(condlist=[sample['PC1_9'] < np.nanmedian(sample['PC1_9']),
-                                        sample['PC1_9'] >= np.nanmedian(sample['PC1_9'])],
+sample['PC1_b_9'] = np.select(condlist=[sample['PC1_9'] <= sample['PC1_9'].quantile(0.25),
+                                        sample['PC1_9'] >= sample['PC1_9'].quantile(0.75)],
                               choicelist=[1, 0],
                               default=np.nan)  # 1 = high digital literacy, 0 = low digital literacy
-sample['PC1_b_9'].value_counts(dropna=False)
+sample['PC1_b_9'].value_counts(dropna=False)  # 1 = 891, 0 = 890, NaN = 1822
 
 ########## Wave 10 PCA
 # Select variables related to digital literacy
@@ -112,12 +113,13 @@ pca_loadings_10 = pd.DataFrame(pca_digital_10.components_)
 
 # PC1 loadings
 pc1_loadings_10 = pd.DataFrame({'Item': ['Frequency of using the Internet',
-                                         'desktop', 'laptop', 'tablet', 'smartphone', 'other',
-                                         'no device (do not access the Internet)',
-                                         'emails', 'video calls', 'finding information (learning)',
-                                         'finding information (health)', 'finances', 'shopping', 'selling',
-                                         'social networking', 'creating content', 'news', 'music', 'games',
-                                         'job application', 'government services', 'other', 'none of the above'],
+                                         'desktop', 'laptop', 'tablet', 'smartphone', 'other devices',
+                                         'emails', 'video calls', 'finding information', 'finances', 'shopping', 'selling',
+                                         'social networking', 'news', 'TV/radio', 'music', 'games', 'e-books',
+                                         'job application', 'government services', 'checking travel times',
+                                         'satellite navigation', 'buying public transport tickets', 'booking a taxi',
+                                         'finding local amenities', 'controlling household appliances',
+                                         'no online activities'],
                                 'Description': '',
                                 'Loading': pca_loadings_10.iloc[0, :] | p(round, 3)
                                 })
@@ -138,8 +140,25 @@ fig_10.update_layout(
     yaxis=dict(tickmode='array', tickvals=list(np.arange(0, 0.30, 0.05))),
 )
 
-fig_10.write_image(figure_path / 'pca_screeplot_q2.png')
-fig_10.show()
+# fig_10.write_image(figure_path / 'pca_screeplot_w10_q2.png')
+# fig_10.show()
+
+# combine the two plots
+fig = make_subplots(rows=1, cols=2, subplot_titles=('Wave 9', 'Wave 10'))
+
+for trace in fig_9.data:
+    fig.add_trace(trace, row=1, col=1)
+
+fig.update_xaxes(title='Principal component', row=1, col=1)
+fig.update_yaxes(title='Proportion of variance explained', row=1, col=1)
+
+for trace in fig_10.data:
+    fig.add_trace(trace, row=1, col=2)
+
+fig.update_xaxes(title='Principal component', row=1, col=2)
+
+fig.write_image(figure_path / 'pca_screeplot_q2.png')
+fig.show()
 
 # Extract PCA scores
 pca_scores_10 = pca_digital_10.transform(digital_10_scaled) | p(pd.DataFrame)
@@ -151,11 +170,11 @@ sample = sample.merge(digital_10[['idauniq', 'PC1_10']], on='idauniq', how='left
 sample['PC1_10'].value_counts(dropna=False)
 
 # binary PC1
-sample['PC1_b_10'] = np.select(condlist=[sample['PC1_10'] < np.nanmedian(sample['PC1_10']),
-                                         sample['PC1_10'] >= np.nanmedian(sample['PC1_10'])],
+sample['PC1_b_10'] = np.select(condlist=[sample['PC1_10'] <= sample['PC1_10'].quantile(0.25),
+                                         sample['PC1_10'] >= sample['PC1_10'].quantile(0.75)],
                                choicelist=[1, 0],
                                default=np.nan)  # 1 = high digital literacy, 0 = low digital literacy
-sample['PC1_b_10'].value_counts(dropna=False)
+sample['PC1_b_10'].value_counts(dropna=False)  # 1 = 892, 0 = 892, NaN = 1819
 
 ########## Save data
 sample.to_csv(derived_path / 'wave_910_pca.csv', index=False)
