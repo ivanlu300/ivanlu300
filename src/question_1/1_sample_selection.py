@@ -13,6 +13,7 @@ main_var = (['idauniq', 'W10scout',
              'Hehelf',  # self-reported health
              'WpDes', 'DhWork',  # employment status
              'PScedA', 'PScedB', 'PScedC', 'PScedD', 'PScedE', 'PScedF', 'PScedG', 'PScedH',  # ces-d
+             'hepsyan', 'hepsyde', 'hepsymo',  # mental health
              'HOBB', 'SCINT'] + \
             ['SCIND'] + [f'SCIND0{number}' for number in range(1, 6)] + \
             ['SCINA'] + [f'SCINA0{number}' for number in range(1, 10)] + [f'SCINA{number}' for number in
@@ -39,7 +40,7 @@ ifs_var = ['idauniq', 'elsa', 'nonwhite', 'edend', 'edqual']
 ifs_9 = pd.read_table(main_path / 'wave_9_ifs_derived_variables.tab', usecols=ifs_var)
 
 # Merge data
-main_10 = main_10.merge(ifs_9, on='idauniq', how='inner')
+main_10 = main_10.merge(ifs_9, on='idauniq', how='inner')  # N = 5476
 
 ########## Sample selection
 main_10['W10scout'].value_counts(dropna=False)  # remove respondents who did not receive or were not eligible for self-completion questionnaire

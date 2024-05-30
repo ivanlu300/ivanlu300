@@ -13,10 +13,10 @@ table_path = Path().resolve().parents[1] / 'output' / 'table'
 main_10 = pd.read_csv(derived_path / 'wave_10_pca.csv')
 
 # Treatment
-main_10['PC1_b'].value_counts(dropna=False)  # 1: 1988, 0: 1987, NaN: 42
+main_10['PC1_b'].value_counts(dropna=False)  # 1: 994, 0: 994, NaN: 2029
 
 # Descriptive statistics
-desc_vars = ['srh', 'high_bp', 'high_chol', 'diabetes', 'asthma', 'arthritis', 'cancer', 'cesd_b',
+desc_vars = ['srh', 'high_bp', 'high_chol', 'diabetes', 'asthma', 'arthritis', 'cancer', 'cesd', 'anxiety', 'mood',
              'age', 'sex', 'ethnicity', 'edu_age', 'employ_status', 'total_income_bu_d', 'n_deprived', 'memory', 'numeracy', 'comprehension']
 
 # descriptive statistics by treatment status for non-categorical variables
@@ -34,16 +34,18 @@ desc_df.rename(columns={1: 'High', 0: 'Low'}, inplace=True)
 
 # rename rows
 desc_df.index = desc_df.index.astype(str)
-desc_df.rename(index={'srh': 'Self-reported health',
+desc_df.rename(index={'srh': 'Self-rated health',
                       'high_bp': 'High blood pressure',
                       'high_chol': 'High cholesterol',
                       'diabetes': 'Diabetes',
                       'asthma': 'Asthma',
                       'arthritis': 'Arthritis',
                       'cancer': 'Cancer',
-                      'cesd_b': 'CES-D diagnosis',
+                      'cesd': 'Depression score',
+                      'anxiety': 'Anxiety disorder',
+                      'mood': 'Mood swings',
                       'age': 'Age',
-                      'sex': 'Sex',
+                      'sex': 'Gender',
                       'ethnicity': 'Ethnicity',
                       '1': 'Single',
                       '2': 'Married',
@@ -60,7 +62,7 @@ desc_df.rename(index={'srh': 'Self-reported health',
                       '6.0': 'Foreign/other qualification',
                       '7.0': 'No qualification',
                       'employ_status': 'Employment status',
-                      'total_income_bu_d': 'Decile of household income',
+                      'total_income_bu_d': 'Household income (decile)',
                       'n_deprived': 'Deprivation index',
                       'memory': 'Memory',
                       'numeracy': 'Numeracy index',
