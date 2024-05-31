@@ -25,6 +25,10 @@
 % This one will format for PDF output (ie equal margins, no extra blank pages):
 \documentclass[a4paper,nobind]{ociamthesis} 
 
+%%%%% ADDITIONAL PREAMBLE
+% also count words in tables
+%TC:group table 0 1
+%TC:group tabular 1 1
 
 %%%%% ADD ADDITIONAL PACKAGES HERE
 % date format
@@ -35,6 +39,8 @@
 \usepackage{tabularx}
 \usepackage{threeparttable}
 \usepackage{booktabs}
+\usepackage{subcaption}
+\usepackage{float}
 
 % math
 \usepackage{amsmath}
@@ -212,7 +218,9 @@
 \flushbottom
 \include{text/ch1-intro}
 \include{text/ch2-litreview}
+\include{text/ch3-hypothesis}
 \include{text/ch4-strategy}
+\include{text/ch5-result}
 
 
 %% APPENDICES %% 

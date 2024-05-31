@@ -4,6 +4,9 @@
 % Preamble
 \documentclass[12pt]{article}
 
+%TC:group table 0 1
+%TC:group tabular 1 1
+
 % Packages
 \usepackage{amsmath}
 \usepackage{booktabs}
@@ -17,18 +20,18 @@
         \label{tab:pc1_loadings_rq1}
         \begin{tabular}{llc}
             \toprule
-            Item & Description & Loading \\
+            Feature & Description & Loading \\
             \midrule
-            Frequency of using the Internet & 1 = every day, 6 = never & 0.280 \\
+            \textbf{Frequency of Internet usage} & 1 = every day, 6 = never & 0.280 \\
             & & \\
-            \textbf{Hardware} (devices) & 1 = yes, 0 = no & \\
+            \textbf{Hardware literacy} (devices) & 1 = yes, 0 = no & \\
             desktop &  & -0.094 \\
             laptop &  & -0.137 \\
             tablet &  & -0.121 \\
             smartphone &  & -0.245 \\
             other devices &  & -0.039 \\
             & & \\
-            \textbf{Software} (activities) & 1 = yes, 0 = no & \\
+            \textbf{Software literacy} (activities) & 1 = yes, 0 = no & \\
             emails &  & -0.258 \\
             video calls &  & -0.226 \\
             finding information &  & -0.218 \\
