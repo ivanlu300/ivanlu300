@@ -29,6 +29,8 @@
 % also count words in tables
 %TC:group table 0 1
 %TC:group tabular 1 1
+%TC:group figure 0 1
+%TC:group sidewaystable 0 1
 
 %%%%% ADD ADDITIONAL PACKAGES HERE
 % date format
@@ -37,13 +39,21 @@
 
 % table
 \usepackage{tabularx}
-\usepackage{threeparttable}
+\usepackage{threeparttable}  % for table notes
 \usepackage{booktabs}
-\usepackage{subcaption}
+\usepackage{subcaption}  % for sub-tables
 \usepackage{float}
+\usepackage{tabularray}  % for long tables and table notes
+\UseTblrLibrary{booktabs}
+
+% figure
+\usepackage{caption}  % for figure notes
 
 % math
 \usepackage{amsmath}
+
+% list
+\usepackage{enumitem}  % for custom enumerate
 
 
 %%%%% SELECT YOUR DRAFT OPTIONS
