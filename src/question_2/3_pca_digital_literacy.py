@@ -68,8 +68,8 @@ fig_9.update_layout(
     yaxis=dict(tickmode='array', tickvals=list(np.arange(0, 0.30, 0.05))),
 )
 
-# fig_9.write_image(figure_path / 'pca_screeplot_w9_q2.png')
-# fig_9.show()
+fig_9.write_image(figure_path / 'pca_screeplot_q2.png')
+fig_9.show()
 
 # Extract PCA scores
 pca_scores_9 = pca_digital_9.transform(digital_9_scaled) | p(pd.DataFrame)
@@ -176,11 +176,11 @@ sample['PC1_diff'] = sample['PC1_10'] - sample['PC1_9']
 #
 sample = sample.loc[sample['PC1_b_9'].notnull(), :]
 
-#
+# remove respondents whose difference in digital literacy index between waves is greater or equal to one standard deviation
 sample = sample.loc[abs(sample['PC1_diff']) < digital_9['PC1_9'].std(), :]
 
-#
-sample['PC1_b_9'].value_counts(dropna=False)
+# check the distribution of group assignment
+sample['PC1_b_9'].value_counts(dropna=False)  # 1 = 589, 0 = 291
 
 ########## Save data
 sample.to_csv(derived_path / 'wave_910_pca.csv', index=False)
