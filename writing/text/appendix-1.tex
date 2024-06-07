@@ -1,1 +1,193 @@
 \chapter{\label{ch:appendix}Appendices}
+
+\begin{table}[h!]
+    \centering
+    \caption{Sample selection - RQ1}
+    \label{app:sample_selection_rq1}
+    \begin{tabularx}{\textwidth}{lXc}
+        \toprule
+        Step & Description & Number of respondents remaining \\
+        \midrule
+        1 & Initial sample (all respondents from Wave 10) & 7,586 \\
+        2 & Remove respondents missing IFS-derived information & 5,476 \\
+        3 & Remove respondents ineligible for the self-completion questionnaire & 4,766 \\
+        4 & Remove respondents residing in institutions & 4,760 \\
+        5 & Remove respondents receiving formal care at home & 4,695 \\
+        6 & Remove respondents receiving informal care at home & 4,290 \\
+        7 & Remove respondents without Internet access at home & 4,017 \\
+        \bottomrule
+    \end{tabularx}
+\end{table}
+
+\begin{table}[h!]
+    \centering
+    \caption{Sample selection - RQ2}
+    \label{app:sample_selection_rq2}
+    \begin{tabularx}{\textwidth}{lXc}
+        \toprule
+        Step & Description & Number of respondents remaining \\
+        \midrule
+        1 & Initial sample (intersection of Wave 9 and Wave 10) & 5,476 \\
+        2 & Remove respondents ineligible for the self-completion questionnaire in either wave & 4,482 \\
+        3 & Remove respondents residing in institutions in either wave & 4,477 \\
+        4 & Remove respondents receiving formal care at home in either wave & 4,419 \\
+        5 & Remove respondents receiving informal care at home in either wave & 3,925 \\
+        6 & Remove respondents without Internet access at home in either wave & 3,603 \\
+        \bottomrule
+    \end{tabularx}
+\end{table}
+
+\begin{table}[h!]
+    \centering
+    \caption{IPTW estimate - Probit model}
+    \label{app:iptw_probit}
+    \begin{threeparttable}
+        \begin{tabular}{llc}
+            \toprule
+            Outcome & Description & IPTW \\
+            \midrule
+            Self-rated health & 1 = excellent, 5 = poor & \textbf{-0.316}*** \\
+            & & [-7.131] \\
+            & & \\
+            Physical health & 1 = yes, 0 = no & \\
+            High blood pressure &  & -0.009 \\
+            &  & [-0.374] \\
+            High cholesterol &  & \textbf{-0.061}** \\
+            &  & [-2.594] \\
+            Diabetes &  & \textbf{-0.031}* \\
+            &  & [-2.121] \\
+            Asthma &  & \textbf{-0.039}** \\
+            &  & [-2.621] \\
+            Arthritis &  & -0.022 \\
+            &  & [-0.914] \\
+            Cancer &  & \textbf{-0.031}*** \\
+            &  & [-4.029] \\
+            & & \\
+            Mental health & & \\
+            Depression score & 0 = no symptom, 8 = all symptoms & \textbf{-0.265}*** \\
+            & & [-3.546] \\
+            Anxiety disorder & 1 = yes, 0 = no  & -0.017 \\
+            &  & [-1.191] \\
+            Mood swings & 1 = yes, 0 = no  & 0.009 \\
+            &  & [1.746] \\
+            \bottomrule
+        \end{tabular}
+        \begin{tablenotes}
+            \footnotesize
+            \item Notes: *** $p < 0.001$, ** $p < 0.01$, * $p < 0.05$. t-statistics are reported in square brackets.
+        \end{tablenotes}
+    \end{threeparttable}
+\end{table}
+
+\begin{table}[h!]
+    \centering
+    \caption{DiD estimate - Probit model}
+    \label{app:did_probit}
+    \begin{threeparttable}
+        \begin{tabular}{llc}
+            \toprule
+            Outcome & Description & DiD \\
+            \midrule
+            Self-rated health & 1 = excellent, 5 = poor & \textbf{-0.164}* \\
+            &  & [-2.057] \\
+            & & \\
+            Physical health & 1 = yes, 0 = no & \\
+            High blood pressure &  & \textbf{-0.117}*** \\
+            &  & [-3.703] \\
+            High cholesterol &  & -0.021 \\
+            &  & [-0.639] \\
+            Diabetes &  & \textbf{-0.028}* \\
+            &  & [-2.011] \\
+            Asthma &  & 0.007 \\
+            &  & [0.471] \\
+            Arthritis &  & 0.014 \\
+            &  & [0.525] \\
+            Cancer &  & \textbf{-0.064}** \\
+            &  & [-2.683] \\
+            & & \\
+            Mental health & & \\
+            Depression score & 0 = no symptom, 8 = all symptoms & \textbf{-0.342}* \\
+            &  & [-2.560] \\
+            Anxiety disorder & 1 = yes, 0 = no & -0.025 \\
+            &  & [-1.349] \\
+            Mood swings & 1 = yes, 0 = no & -0.011 \\
+            &  & [-1.738] \\
+            \bottomrule
+        \end{tabular}
+        \begin{tablenotes}
+            \footnotesize
+            \item Notes: *** $p < 0.001$, ** $p < 0.01$, * $p < 0.05$. t-statistics are reported in square brackets.
+        \end{tablenotes}
+    \end{threeparttable}
+\end{table}
+
+\begin{table}[h!]
+    \centering
+        \caption{DiD estimate - 3 Nearest Neighbour Matching}
+        \label{app:did_matching_3nn}
+        \begin{tabular}{llc}
+            \toprule
+            Outcome & Description & DiD \\
+            \midrule
+            Self-rated health & 1 = excellent, 5 = poor & -0.006 \\
+            &  & [-0.098] \\
+            & & \\
+            Physical health & 1 = yes, 0 = no & \\
+            High blood pressure &  & \textbf{-0.076}** \\
+            &  & [-3.157] \\
+            High cholesterol &  & 0.020 \\
+            &  & [0.705] \\
+            Diabetes &  & 0.005 \\
+            &  & [0.338] \\
+            Asthma &  & \textbf{-0.052}*** \\
+            &  & [-3.896] \\
+            Arthritis &  & -0.021 \\
+            &  & [-0.904] \\
+            Cancer &  & \textbf{-0.056}* \\
+            &  & [-2.504] \\
+            & & \\
+            Mental health & & \\
+            Depression score & 0 = no symptom, 8 = all symptoms & 0.170 \\
+            &  & [1.663] \\
+            Anxiety disorder & 1 = yes, 0 = no & \textbf{-0.036}* \\
+            &  & [-2.227] \\
+            Mood swings & 1 = yes, 0 = no & -0.008 \\
+            &  & [-1.301] \\
+            \bottomrule
+        \end{tabular}
+\end{table}
+
+\begin{table}[h!]
+        \caption{DiD estimate - 5 Nearest Neighbour Matching}
+        \label{app:did_matching_5nn}
+        \begin{tabular}{llc}
+            \toprule
+            Outcome & Description & DiD \\
+            \midrule
+            Self-rated health & 1 = excellent, 5 = poor & 0.063 \\
+            &  & [1.139] \\
+            & & \\
+            Physical health & 1 = yes, 0 = no & \\
+            High blood pressure &  & \textbf{-0.075}*** \\
+            &  & [-3.479] \\
+            High cholesterol &  & 0.002 \\
+            &  & [0.078] \\
+            Diabetes &  & 0.014 \\
+            &  & [0.939] \\
+            Asthma &  & \textbf{-0.029}* \\
+            &  & [-2.416] \\
+            Arthritis &  & -0.016 \\
+            &  & [-0.741] \\
+            Cancer &  & \textbf{-0.060}** \\
+            &  & [-2.820] \\
+            & & \\
+            Mental health & & \\
+            Depression score & 0 = no symptom, 8 = all symptoms & \textbf{-0.357}*** \\
+            &  & [-3.364] \\
+            Anxiety disorder & 1 = yes, 0 = no & \textbf{-0.031}* \\
+            &  & [-1.974] \\
+            Mood swings & 1 = yes, 0 = no & -0.004 \\
+            &  & [-0.646] \\
+            \bottomrule
+        \end{tabular}
+\end{table}

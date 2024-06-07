@@ -64,7 +64,7 @@ financial_9 = pd.read_table(main_path / 'wave_9_financial_derived_variables.tab'
 
 # Merge data
 full_9 = main_9.merge(ifs_9, on='idauniq', how='left').merge(financial_9, on='idauniq', how='left')
-sample = full_9.merge(main_10, on='idauniq', how='inner', suffixes=('_9', '_10'))  # only conflicting variables have suffixes
+sample = full_9.merge(main_10, on='idauniq', how='inner', suffixes=('_9', '_10'))  # only conflicting variables have suffixes, N = 5,476
 
 ########## Sample selection
 sample['w9scout'].value_counts(dropna=False)  # remove respondents who did not receive or were not eligible for self-completion questionnaire

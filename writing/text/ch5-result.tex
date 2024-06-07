@@ -1,7 +1,7 @@
 \chapter{\label{ch:5-result}Results}
 
 \section{Digital literacy index - RQ1}
-Figure \ref{fig:screeplot_rq1} is the screeplot derived from the PCA analysis, which shows the proportion of variance explained by each principal component. Following the three rules of thumb \parencite[p. 212]{zelterman_applied_2015} described in Section 4.3.1.2, this study selects the first principal component (PC1) as the digital literacy index. The specific steps are as follows: i) principal components are selected in sequence (i.e., from left to right); ii) according to the screeplot, PC1 is a clear upward outlier among all principal components; iii) PC1 explains around 25\% of the total variance, which surpasses the 20\% threshold. 
+Figure \ref{fig:screeplot_rq1} is the screeplot derived from the PCA analysis, which shows the proportion of variance explained by each principal component. Following the three rules of thumb \parencite[p. 212]{zelterman_applied_2015} described in Section 4.3.1.2, this study selects the first principal component (PC1) as the digital literacy index. The specific steps are as follows: i) principal components are selected in sequence (i.e., from left to right); ii) according to the screeplot, PC1 is the clear upward outlier among all principal components; iii) PC1 explains around 25\% of the total variance, which surpasses the 20\% threshold. 
 
 \begin{figure}
     \centering
@@ -10,7 +10,7 @@ Figure \ref{fig:screeplot_rq1} is the screeplot derived from the PCA analysis, w
     \includegraphics[width=\textwidth]{figures/pca_screeplot_q1.png}
 \end{figure}
 
-Further examination of PC1's loadings (see Table \ref{tab:pc1_loadings_rq1}) supports its appropriateness as a digital literacy index. The loading for frequency of Internet usage is positive, meaning that respondents with larger PC1 scores use the Internet less frequently. All loadings of hardware literacy are negative, suggesting that respondents with larger PC1 scores use fewer devices to access the Internet. All loadings of software literacy (except for ``no online activities”, which is positive) are negative, indicating that respondents with larger PC1 scores do fewer online activities and are more likely to do no online activities. These loadings consistently point to the direction that large PC1 scores correspond to lower digital literacy, thereby validating the use of PC1 as the digital literacy index. To enhance interpretability, this study adjusts the PC1 scores by reversing their signs, where now larger values indicate greater digital literacy.
+Further examination of PC1's loadings (see Table \ref{tab:pc1_loadings_rq1}) supports its appropriateness as a digital literacy index. The loading for frequency of Internet usage is positive, meaning that respondents with larger PC1 scores use the Internet less frequently. All loadings of hardware literacy are negative, suggesting that respondents with larger PC1 scores use fewer devices to access the Internet. All loadings of software literacy are negative (except for ``no online activities”, which is positive), indicating that respondents with larger PC1 scores do fewer online activities and are more likely to do no online activities. These loadings consistently point to the direction that large PC1 scores correspond to lower digital literacy, thereby validating the use of PC1 as the digital literacy index. To enhance interpretability, this study adjusts the PC1 scores by reversing their signs, where now larger values indicate greater digital literacy.
 
 \begin{table}[h!]
     \centering
@@ -128,7 +128,7 @@ Table \ref{tab: desc_stats_rq1} presents the descriptive statistics by digital l
     \end{tabular}
 \end{sidewaystable}
 
-In terms of outcome variables, respondents with high digital literacy consistently exhibit superior health outcomes across all three dimensions. Specifically, as for self-rated health, the average level for respondents with high digital literacy is 2.337 (i.e., ``very good"), while those with lower digital literacy have an average score of 3.002 (i.e., ``good"). As for physical health, individuals with high digital literacy are less likely to be diagnosed with all six surveyed diseases than their less digitally literate counterparts. As for mental health, those with higher digital literacy levels report fewer depressive symptoms and are less prone to mood swings. However, it is noted that respondents with high digital literacy are more likely to be diagnosed with anxiety disorders, with a minimal difference of 0.018. Given the consistency of other health outcomes, this slight discrepancy is likely attributable to statistical randomness.
+In terms of outcome variables, respondents with high digital literacy consistently exhibit superior health outcomes across all three dimensions. Specifically, as for self-rated health, the average level for respondents with high digital literacy is 2.337 (i.e., ``very good"), while those with lower digital literacy have an average score of 3.002 (i.e., ``good"). As for physical health, individuals with high digital literacy are less likely to have all six surveyed diseases than their less digitally literate counterparts. As for mental health, those with higher digital literacy levels report fewer depressive symptoms and are less prone to mood swings. However, it is noted that respondents with high digital literacy are more likely to have anxiety disorders, with a minimal difference of 0.018. Given the consistency of other health outcomes, this slight discrepancy is likely attributable to statistical randomness.
 
 In terms of control variables, respondents with high digital literacy also possess socio-economic advantages that can lead to both higher digital literacy and better health outcomes. Specifically, Individuals with high digital literacy tend to be younger, predominantly male, and more likely to be married/remarried rather than divorced/widowed. They are typically non-White, have left full-time education at an older age, and possess higher educational qualifications. Furthermore, they are more likely to be employed, earn a higher household income, experience lower levels of deprivation, and demonstrate enhanced memory, numeracy, and comprehension skills compared to their less digitally literate counterparts.
 
@@ -181,16 +181,16 @@ This study adopts an identification strategy that accounts for both simultaneity
 
 As for self-rated health, the IPTW estimate is -0.326, meaning that with other factors held constant, high digital literacy improves self-rated health by 0.326 points, moving it closer to ``excellent". This effect is statistically significant at the 0.001 level.
 
-As for physical health, with other factors held constant, high digital literacy leads to a 6.7 percentage points decrease in the likelihood of being diagnosed with high cholesterol, a 3.4 percentage points decrease for diabetes, a 4.2 percentage points decrease for asthma, and a 3.1 percentage points decrease for cancer. The effects on these four diseases are statistically significant. High digital literacy also leads to a 1.8 percentage points decrease for arthritis, but this effect is not statistically significant. Interestingly, the IPTW estimate for high blood pressure is positive 0.002, but the effect size is minimal and is not statistically different from zero. This suggests that the estimate is likely due to statistical randomness rather than a genuine effect of high digital literacy on increasing the incidence of high blood pressure.
+As for physical health, with other factors held constant, high digital literacy leads to a 6.7 percentage points decrease in the likelihood of having high cholesterol, a 3.4 percentage points decrease for diabetes, a 4.2 percentage points decrease for asthma, and a 3.1 percentage points decrease for cancer. The effects on these four diseases are statistically significant. High digital literacy also leads to a 1.8 percentage points decrease for arthritis, but this effect is not statistically significant. Interestingly, the IPTW estimate for high blood pressure is positive 0.002, but the effect size is minimal and is not statistically different from zero. This suggests that the estimate is likely due to statistical randomness rather than a genuine effect of high digital literacy on increasing the incidence of high blood pressure.
 
-As for mental health, with other factors held constant, high digital literacy reduces the number of depressive symptoms by 0.292, and this effect is statistically significant at 0.001 level. High digital literacy also leads to a 1.8 percentage points decrease in the likelihood of being diagnosed with anxiety disorder, but this effect is not statistically significant. Interestingly, the IPTW estimate for mood swings is positive 0.009, but again this effect size is minimal and is not statistically different from zero. This suggests that the estimate is likely due to statistical randomness rather than a genuine effect of high digital literacy on increasing the incidence of mood swings.
+As for mental health, with other factors held constant, high digital literacy reduces the number of depressive symptoms by 0.292, and this effect is statistically significant at 0.001 level. High digital literacy also leads to a 1.8 percentage points decrease in the likelihood of having anxiety disorder, but this effect is not statistically significant. Interestingly, the IPTW estimate for mood swings is positive 0.009, but again this effect size is minimal and is not statistically different from zero. This suggests that the estimate is likely due to statistical randomness rather than a genuine effect of high digital literacy on increasing the incidence of mood swings.
 
-In summary, the IPTW results confirm the hypothesis for the first research question, demonstrating that high digital literacy contributes to improved health outcomes among older adults. This beneficial effect is evident 6 out of the 10 health outcomes examined, which span across all three health dimensions. Specifically, the six health outcomes showing statistical significance are self-rated health, physical health (high cholesterol, diabetes, asthma, and cancer), and mental health (depression).
+In summary, the IPTW results confirm the hypothesis for the first research question, demonstrating that high digital literacy contributes to improved health outcomes among older adults. This beneficial effect is evident in 6 out of the 10 health outcomes examined, which span across all three health dimensions. Specifically, the six health outcomes showing statistical significance are self-rated health, physical health (high cholesterol, diabetes, asthma, and cancer), and mental health (depression).
 
 \section{Robustness checks - RQ1}
 
 \subsection{Strong ignorability}
-As discussed in Section 4.4.2, one critical assumption of the IPTW method is strong ignorability. To evaluate the robustness of the IPTW estimates against potential violations of this assumption, this study conducts separate sensitivity analyses on health outcomes that demonstrated statistical significance. The outcomes of these analyses are presented in Figure \ref{fig:sense}. Points on or above with the red dashed line indicate scenarios where an uncontrolled confounder would negate the observed effect.
+As discussed in Section 4.4.2, one critical assumption of the IPTW method is strong ignorability. To evaluate the robustness of the IPTW estimates against potential violation of this assumption, this study conducts separate sensitivity analyses on health outcomes that demonstrated statistical significance. The outcomes of these analyses are presented in Figure \ref{fig:sense}. Points on or above with the red dashed line indicate scenarios where an uncontrolled confounder would negate the observed effect.
 
 \begin{figure}
     \centering
@@ -200,17 +200,17 @@ As discussed in Section 4.4.2, one critical assumption of the IPTW method is str
     \caption*{\footnotesize Notes: Points that reach the red dashed line indicate that the observed effect is nullified by the uncontrolled confounder.}
 \end{figure}
 
-For self-rated health, diabetes, asthma, and cancer, the results from the sensitivity analysis underscore the robustness of their IPTW estimates. As illustrated, their corresponding 7x points all fall below the red dash line, meaning that even an uncontrolled confounder exerting seven times the effect of deprivation — a factor extensively documented as a critical confounder in the literature on digital literacy and health outcomes \parencite[p. 212]{zelterman_applied_2015} — fails to invalidate the observed relationships. The improbability of encountering an uncontrolled confounder with such a disproportionately high impact strengthens the robustness of the identified causal effects of digital literacy on self-rated health, diabetes, asthma, and cancer.
+For self-rated health, diabetes, asthma, and cancer, the results from the sensitivity analysis underscore the robustness of their IPTW estimates. As illustrated, their corresponding 7x points all fall below the red dash line, meaning that even an uncontrolled confounder exerting seven times the effect of deprivation — a factor extensively documented as a critical confounder in the literature on digital literacy and health outcomes \parencite[p. 212]{zelterman_applied_2015} — fails to nullify the observed relationships. The improbability of encountering an uncontrolled confounder with such a disproportionately high impact strengthens the robustness of the identified causal effects of digital literacy on self-rated health, diabetes, asthma, and cancer.
 
-Regarding depression, the figure shows that the 5x point is on the red dash line, meaning that an uncontrolled confounder with an impact five times greater than that of deprivation could nullify the observed effect. Similarly regarding high cholesterol, the figure shows that the red dash line lies between the 3x and 5x point, meaning that that an uncontrolled confounder with an impact approximately four times greater than that of deprivation could nullify observed relationship. Although a fourfold or fivefold effect appears less extreme than a sevenfold effect, identifying such a potent uncontrolled confounder remains highly improbable given that deprivation is already a very impactful confounder. 
+Regarding depression, the figure shows that the 5x point is on the red dash line, meaning that an uncontrolled confounder with an impact five times greater than that of deprivation could nullify the observed effect. Similarly regarding high cholesterol, the figure shows that the red dash line lies between the 3x and 5x point, meaning that that an uncontrolled confounder with an impact approximately four times greater than that of deprivation could nullify the observed relationship. Although a fourfold or fivefold effect appears less extreme than a sevenfold effect, identifying such a potent uncontrolled confounder remains highly improbable given that deprivation is already a very impactful confounder. 
 
 In summary, while the strong ignorability assumption remains inherently untestable, this sensitivity analysis provides compelling evidence of the robustness of IPTW estimates, particularly for self-rated health, diabetes, asthma, and cancer. These findings affirm that higher digital literacy contributes to improved health outcomes across all three dimensions for older adults.
 
 \subsection{Positivity}
-As discussed in Section 4.4.2, another critical assumption of the IPTW method is positivity. To evaluate the robustness of the IPTW estimates against potential violations of this assumption, this study implements the two rules of thumb recommended by \textcite{cole_constructing_2008}. For the first rule, the calculated mean of the stabilised weights is 0.942, indicating minimal deviation from the ideal value of one. For the second rule, the minimum and maximum values of the stabilised weights are 0.463 and 21.29 respectively, neither too extreme. These results suggest that the treatment assignment is well-balanced across the levels of confounders within the sample, supporting the integrity of the positivity assumption in this study.
+As discussed in Section 4.4.2, another critical assumption of the IPTW method is positivity. To evaluate the robustness of the IPTW estimates against potential violation of this assumption, this study implements the two rules of thumb recommended by \textcite{cole_constructing_2008}. For the first rule, the calculated mean of the stabilised weights is 0.942, indicating minimal deviation from the ideal value of one. For the second rule, the minimum and maximum values of the stabilised weights are 0.463 and 21.29 respectively, neither too extreme. These results suggest that the treatment assignment is well-balanced across the levels of confounders within the sample, supporting the integrity of the positivity assumption in this study.
 
 \section{Digital literacy index - RQ2}
-As mentioned in Section 4.6.1, to address the potential contamination of group assignment, this study firstly conducts a PCA on Wave 9 data, extracts the loadings of the selected principal component(s), and applies the loadings to Wave 10 data. Figure \ref{fig:screeplot_rq2} is the screeplot derived from the PCA on Wave 9 data, which shows the proportion of variance explained by each principal component. 
+Figure \ref{fig:screeplot_rq2} is the screeplot derived from the PCA on Wave 9 data, which shows the proportion of variance explained by each principal component. Following the three rules of thumb \parencite[p. 212]{zelterman_applied_2015} described in Section 4.3.1.2, this study selects PC1 as the digital literacy index. The specific steps are as follows: i) principal components are selected in sequence (i.e., from left to right); ii) according to the screeplot, PC1 is the clear upward outlier among all principal components; iii) PC1 explains around 25\% of the total variance, which surpasses the 20\% threshold. 
 
 \begin{figure}
     \centering
@@ -219,120 +219,61 @@ As mentioned in Section 4.6.1, to address the potential contamination of group a
     \includegraphics[width=\textwidth]{figures/pca_screeplot_q2.png}
 \end{figure}
 
-Again, following the three rules of thumb described in Section 4.3.1.2, this study selects PC1 as the digital literacy index for Wave 9. The specific steps are as follows: i) principal components are selected in sequence (i.e., from left to right); ii) according to the screeplot, PC1 is a clear upward outlier among all principal components; iii) PC1 explains around 25\% of the total variance, which surpasses the 20\% threshold. 
-
-Further examination of PC1's loadings (see Table \ref{tab:pc1_loadings_w9_rq2}) supports its appropriateness as a digital literacy index. The loading for frequency of Internet usage is positive, meaning that respondents with larger PC1 scores use the Internet less frequently. All loadings of hardware literacy are negative, suggesting that respondents with larger PC1 scores use fewer devices to access the Internet. All loadings of software literacy (except for ``no online activities”, which is positive) are negative, indicating that respondents with larger PC1 scores do fewer online activities and are more likely to do no online activities. These loadings consistently point to the direction that large PC1 scores correspond to lower digital literacy, thereby validating the use of PC1 as the digital literacy index. To enhance interpretability, this study adjusts Wave 9's PC1 scores by reversing their signs, so that now larger values indicate greater digital literacy.
-
-\begin{sidewaystable}[h!]
-        \centering
-        \caption{Loadings of PC1 - RQ2}
-        \label{tab:pc1_loadings_rq2}
-    
-        \begin{subtable}[t]{0.4\textwidth}
-            \centering
-            \scriptsize
-            \caption{Wave 9}
-            \label{tab:pc1_loadings_w9_rq2}
-            \begin{tabular}{llc}
-                \toprule
-                Feature & Description & Loading \\
-                \midrule
-                \textbf{Frequency of Internet usage} & 1 = every day, 6 = never & 0.357 \\
-                & & \\
-                \textbf{Hardware literacy} (devices) & 1 = yes, 0 = no & \\
-                desktop &  & -0.124 \\
-                laptop &  & -0.129 \\
-                tablet &  & -0.143 \\
-                smartphone &  & -0.243 \\
-                other devices &  & -0.019 \\
-                do not use any device &  & 0.320 \\
-                & & \\
-                \textbf{Software literacy} (activities) & 1 = yes, 0 = no & \\
-                emails &  & -0.308 \\
-                video calls &  & -0.176 \\
-                finding information (learning) &  & -0.213 \\
-                finding information (health) &  & -0.261 \\
-                finances &  & -0.250 \\
-                shopping &  & -0.269 \\
-                selling &  & -0.107 \\
-                social networking &  & -0.176 \\
-                creating content &  & -0.084 \\
-                news &  & -0.215 \\
-                music &  & -0.214 \\
-                games &  & -0.082 \\
-                job application &  & -0.067 \\
-                government services &  & -0.162 \\
-                other online activities &  & -0.021 \\
-                no online activities &  & 0.324 \\
-                \bottomrule
-            \end{tabular}
-        \end{subtable}
-        \hfil
-        \begin{subtable}[t]{0.4\textwidth}
-            \centering
-            \scriptsize
-            \caption{Wave 10}
-            \label{tab:pc1_loadings_w10_rq2}
-            \begin{tabular}{llc}
-                \toprule
-                Feature & Description & Loading \\
-                \midrule
-                \textbf{Frequency of Internet usage} & 1 = every day, 6 = never & 0.278 \\
-                & & \\
-                \textbf{Hardware literacy} (devices) & 1 = yes, 0 = no & \\
-                desktop &  & -0.091 \\
-                laptop &  & -0.134 \\
-                tablet &  & -0.114 \\
-                smartphone &  & -0.245 \\
-                other devices &  & -0.042 \\
-                & & \\
-                \textbf{Software literacy} (activities) & 1 = yes, 0 = no & \\
-                emails &  & -0.255 \\
-                video calls &  & -0.224 \\
-                finding information &  & -0.217 \\
-                finances &  & -0.247 \\
-                shopping &  & -0.255 \\
-                selling &  & -0.107 \\
-                social networking &  & -0.177 \\
-                news &  & -0.225 \\
-                TV/radio &  & -0.221 \\
-                music &  & -0.183 \\
-                games &  & -0.079 \\
-                e-books &  & -0.124 \\
-                job application &  & -0.072 \\
-                government services &  & -0.218 \\
-                checking travel times &  & -0.251 \\
-                satellite navigation &  & -0.234 \\
-                buying public transport tickets &  & -0.173 \\
-                booking a taxi &  & -0.087 \\
-                finding local amenities &  & -0.231 \\
-                controlling household appliances &  & -0.126 \\
-                no online activities &  & 0.243 \\
-                \bottomrule
-            \end{tabular}
-        \end{subtable}
-\end{sidewaystable}
-
-Subsequently, to obtain respondents' group assignment at Wave 9, PC1 scores (i.e., the digital literacy index) are dichotomised to get the explanatory variable for Wave 9: respondents in the lower quartile (bottom 25\%) are categorised as having low digital literacy, coded as 0, while those in the upper quartile (top 25\%) are categorised as having high digital literacy, coded as 1.
-
-As mentioned in Section 4.6.1, to address the possible contamination of group assignment, Wave 9's PC1 loadings are then applied on Wave 10 data to get the digital literacy index for Wave 10. Respondents will only be included in further analysis if the difference in their digital literacy index between Wave 9 and 10 is smaller than one standard deviation of Wave 9's digital literacy index. Table \ref{tab: explanatory_variable_rq2} shows the distribution of the group assignment for the second research question.
+Further examination of PC1's loadings (see Table \ref{tab:pc1_loadings_rq2}) supports its appropriateness as a digital literacy index. The loading for frequency of Internet usage is positive, meaning that respondents with larger PC1 scores use the Internet less frequently. All loadings of hardware literacy are negative, suggesting that respondents with larger PC1 scores use fewer devices to access the Internet. All loadings of software literacy are negative (except for ``no online activities”, which is positive), indicating that respondents with larger PC1 scores do fewer online activities and are more likely to do no online activities. These loadings consistently point to the direction that large PC1 scores correspond to lower digital literacy, thereby validating the use of PC1 as the digital literacy index. To enhance interpretability, this study adjusts Wave 9's PC1 scores by reversing their signs, so that now larger values indicate greater digital literacy.
 
 \begin{table}[h!]
     \centering
-    \caption{Distribution of explanatory variable - RQ2}
+    \caption{Loadings of PC1 - RQ2}
+    \label{tab:pc1_loadings_rq2}
+    \begin{tabular}{llc}
+        \toprule
+        Feature & Description & Loading \\
+        \midrule
+        \textbf{Frequency of Internet usage} & 1 = every day, 6 = never & 0.363 \\
+        & & \\
+        \textbf{Hardware literacy} (devices) & 1 = yes, 0 = no & \\
+        desktop &  & -0.139 \\
+        laptop &  & -0.141 \\
+        tablet &  & -0.159 \\
+        smartphone &  & -0.282 \\
+        other devices &  & -0.023 \\
+        & & \\
+        \textbf{Software literacy} (activities) & 1 = yes, 0 = no & \\
+        emails &  & -0.325 \\
+        video calls &  & -0.212 \\
+        finding information &  & -0.239 \\
+        finances &  & -0.294 \\
+        shopping &  & -0.305 \\
+        selling &  & -0.130 \\
+        social networking &  & -0.207 \\
+        news &  & -0.247 \\
+        music &  & -0.253 \\
+        games &  & -0.097 \\
+        job application &  & -0.083 \\
+        government services &  & -0.196 \\
+        no online activities &  & 0.312 \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+As mentioned in Section 4.6.1, to address the potential contamination of group assignment, this study applies Wave 9's PC1 loadings on Wave 10 data and constructs the digital literacy index. Respondents will only be included in further analysis if their difference in the digital literacy index between Wave 9 and 10 is smaller than one standard deviation of Wave 9's digital literacy index distribution. Table \ref{tab: explanatory_variable_rq2} shows the distribution of the group assignment for the second research question before and after the exclusion.
+
+\begin{table}[h!]
+    \centering
+    \caption{Distribution of group assignment - RQ2}
     \label{tab:explanatory_variable_rq2}
     \begin{tabular}{lcc}
         \toprule
-         & Wave 10 - Low & Wave 10 - High \\
+        Digital literacy & Before exclusion & After exclusion \\
         \midrule
-        Wave 9 - Low & 658 & 3 \\
-        Wave 9 - High & 10 & 565 \\
+        Low & 891 & 291 \\
+        High & 891 & 589 \\
         \bottomrule
     \end{tabular}
 \end{table}
 
 \section{Descriptive statistics - RQ2}
-Figure \ref{fig:desc_stats_rq2} presents respondents' health trends by their group assignment (i.e., low and high). As a reminder, Wave 9 was conducted before the COVID-19 pandemic and Wave 10 was conducted during the pandemic. For most of the variables examined, respondents with high digital literacy have better health outcomes than those with low digital literacy, as evidenced by the non-overlapping 95\% confidence intervals.
+Figure \ref{fig:desc_stats_rq2} presents respondents' health trends by their group assignment (i.e., low and high). Error bars in the figure represent the 95\% confidence intervals. As a reminder, Wave 9 was conducted before the COVID-19 pandemic and Wave 10 was conducted during the pandemic. For all health outcomes, there has been a general deterioration from Wave 9 to Wave 10 for both digital literacy groups. This trend is expected as it underscores the influence of ageing on health outcomes.
 
 \begin{figure}
     \centering
@@ -342,16 +283,16 @@ Figure \ref{fig:desc_stats_rq2} presents respondents' health trends by their gro
     \caption*{Notes: The error bars represent 95\% confidence intervals.}
 \end{figure}
 
-As for self-rated health, a significant pre-existing difference was noted at Wave 9, where respondents with high digital literacy reported better health than those with low digital literacy. This disparity persisted into Wave 10, as indicated by parallel trends in the figure.
+As for self-rated health, respondents with high digital literacy consistently reported better health than those with low digital literacy across both waves. This difference is statistically significant and remains largely parallel as illustrated in the figure.
 
-As for physical health, respondents with high digital literacy at Wave 9 showed a significantly lower likelihood of being diagnosed with high blood pressure, high cholesterol, diabetes, and arthritis compared to those with low digital literacy. These disparities persisted into Wave 10, as indicated by parallel trends in the figure. However, for asthma and cancer, the figure shows overlapping confidence intervals between the two groups at both waves, suggesting no significant differences in the incidence of asthma and cancer between respondents with low and high digital literacy.
+As for physical health, the proportion of respondents with high digital literacy having high blood pressure, high cholesterol, and diabetes is consistently lower than those with low digital literacy across both waves. These differences are statistically significant and remain largely parallel as illustrated in the figure. The proportion of respondents having asthma does not differ between the two groups across both waves, as indicated by the overlapping confidence intervals. The proportion of respondents with high digital literacy having arthritis is significantly lower at Wave 9, but the difference is no longer statistically significant at Wave 10 due to a more substantial increase among the high digital literacy group. The proportion of respondents having cancer does not differ between those with low and high digital literacy at Wave 9, but the proportion of respondents with high digital literacy having cancer is significantly lower at Wave 10 due to a more substantial increase among the low digital literacy group.
 
-As for mental health, for depression, a significant difference was observed in depression at Wave 9, with respondents having high digital literacy experiencing fewer depressive symptoms. This disparity persisted into Wave 10, as indicated by parallel trends in the figure. However, for anxiety disorder and mood swings, the figure shows overlapping confidence intervals between the two groups at both waves, suggesting no significant differences in the incidence of anxiety disorder and mood swings between respondents with low and high digital literacy.
+As for mental health, there are no significant differences in depression scores and the proportion of respondents with anxiety disorders between the two groups across both waves, as indicated by the overlapping confidence intervals. The plot for mood swings presents a more complex picture as the proportion of respondents with low digital literacy having mood swings is zero at Wave 9. This is likely due to the low prevalence of mood swings and the small sample size of the low digital literacy group. At Wave 10, the proportion of respondents having mood swings does not differ between the two groups. 
 
-It is important to recognise that these statistics are descriptive and does not imply that increased digitalisation does not exert any impact on the health inequalities between older adults with low and high digital literacy. As discussed in Section 4.6, relying on a simple DiD comparison assumes the validity of parallel trends, an assumption that is very unlikely to hold in this context due to significant socio-economic differences among respondents, as detailed in Table \ref{tab: desc_stats_rq1}. Thus, a more thorough causal analysis, which carefully addresses potential biases, is essential to accurately determine the impacts of increased digitalisation on health disparities among older adults with low and high digital literacy.
+It is important to recognise that these statistics are descriptive and does not imply the causal impact of increased digitalisation on the health inequalities between older adults with low and high digital literacy. As discussed in Section 4.6, relying on a simple DiD comparison assumes the validity of parallel trends, an assumption that is very unlikely to hold in this context due to significant socio-economic differences among respondents, as detailed in Table \ref{tab: desc_stats_rq1}. Thus, a more thorough causal analysis, which carefully addresses potential biases, is essential to accurately determine the impacts of increased digitalisation on health disparities among older adults with low and high digital literacy.
 
 \section{Main results - RQ2}
-This study adopts an identification strategy that accounts for both the potential contamination of group assignment and the potential violation of the parallel trends assumption. Table \ref{tab:did} presents the Matching DiD estimate of the impact of increased digitalisation on the health disparities between older adults with low and high digital literacy. In short, increased digitalisation has enlarged the health disparities in 3 out of the 10 variables examined, spanning across all three health dimensions. 
+This study adopts an identification strategy that accounts for both the potential contamination of group assignment and the potential violation of the parallel trends assumption. Table \ref{tab:did} presents the Matching DiD estimate of the impact of increased digitalisation on the health disparities between older adults with low and high digital literacy. In short, increased digitalisation enlarges the health disparities in 4 out of the 10 variables examined, spanning across all three health dimensions. 
 
 \begin{table}[h!]
     \centering
@@ -360,32 +301,32 @@ This study adopts an identification strategy that accounts for both the potentia
     \begin{threeparttable}
         \begin{tabular}{llc}
             \toprule
-            Outcome & Description & Matching DiD \\
+            Outcome & Description & DiD \\
             \midrule
-            Self-rated health & 1 = excellent, 5 = poor & \textbf{-0.207}*** \\
-            &  & [-3.762] \\
+            Self-rated health & 1 = excellent, 5 = poor & \textbf{-0.160}* \\
+            &  & [-2.072] \\
             & & \\
             Physical health & 1 = yes, 0 = no & \\
-            High blood pressure &  & -0.029 \\
-            &  & [-1.523] \\
-            High cholesterol &  & 0.002 \\
-            &  & [0.061] \\
-            Diabetes &  & \textbf{-0.044}*** \\
-            &  & [-3.488] \\
-            Asthma &  & 0.003 \\
-            &  & [0.277] \\
-            Arthritis &  & 0.01 \\
-            &  & [0.562] \\
-            Cancer &  & -0.026 \\
-            &  & [-1.671] \\
+            High blood pressure &  & -0.046 \\
+            &  & [-1.569] \\
+            High cholesterol &  & 0.004 \\
+            &  & [0.106] \\
+            Diabetes &  & -0.004 \\
+            &  & [-0.208] \\
+            Asthma &  & 0.007 \\
+            &  & [0.471] \\
+            Arthritis &  & -0.014 \\
+            &  & [-0.525] \\
+            Cancer &  & \textbf{-0.078}** \\
+            &  & [-3.228] \\
             & & \\
             Mental health & & \\
-            Depression score & 0 = no symptom, 8 = all symptoms & -0.115 \\
-            &  & [-1.29] \\
-            Anxiety disorder & 1 = yes, 0 = no & -0.011 \\
-            &  & [-0.843] \\
-            Mood swings & 1 = yes, 0 = no & \textbf{-0.013}** \\
-            &  & [-2.845] \\
+            Depression score & 0 = no symptom, 8 = all symptoms & \textbf{-0.370}** \\
+            &  & [-3.046] \\
+            Anxiety disorder & 1 = yes, 0 = no & \textbf{-0.046}** \\
+            &  & [-2.742] \\
+            Mood swings & 1 = yes, 0 = no & -0.011 \\
+            &  & [-1.738] \\
             \bottomrule
         \end{tabular}
         \begin{tablenotes}
@@ -395,10 +336,10 @@ This study adopts an identification strategy that accounts for both the potentia
     \end{threeparttable}
 \end{table}
 
-As for self-rated health, the Matching DiD estimate is -0.207, meaning that increased digitalisation has enlarged the disparities in self-rated health. In more substantive words, if originally respondents with high digital literacy reported a self-rated health $x$ points better than those with low digital literacy, increased digitalisation has now increased this difference to $x + 0.207$ points. This effect is statistically significant at the 0.001 level. It is important to note that the respondents in this comparison are matched such that their only difference is the level of digital literacy; all other characteristics are the same.
+As for self-rated health, the Matching DiD estimate is -0.160, meaning that increased digitalisation has enlarged the disparities in self-rated health. In more substantive words, if originally respondents with high digital literacy reported a self-rated health $x$ points better than those with low digital literacy, increased digitalisation has now increased this difference to $x + 0.160$ points. This effect is statistically significant at the 0.05 level. It is important to note that the respondents in this comparison are matched such that their only difference is the level of digital literacy; all other characteristics are the same.
 
-As for physical health, the only disease showing statistical significance is diabetes, with a Matching DiD estimate of -0.044, meaning that increased digitalisation has enlarged the disparities in diabetes. In more substantive words, if originally respondents with high digital literacy were $x$ percentage points less likely to be diagnosed with diabetes, increased digitalisation has now increased this difference to $x + 4.4$ percentage points. Increased digitalisation also enlarged the disparities for high blood pressure and cancer (as shown by their negative coefficients), but these effects are not statistically significant. Interestingly, the estimates for high cholesterol, asthma, and arthritis are positive, but the effect sizes are minimal and not statistically different from zero, indicating that the observed shrinkage in disparities for these conditions are likely due to statistical randomness rather than a genuine effect of increased digitalisation on reducing health disparities.
+As for physical health, the only disease showing statistical significance is cancer, with a Matching DiD estimate of -0.078, meaning that increased digitalisation has enlarged the disparities in cancer. In more substantive words, if originally respondents with high digital literacy were $x$ percentage points less likely to have diabetes, increased digitalisation has now increased this difference to $x + 7.8$ percentage points. Increased digitalisation also enlarged the disparities for high blood pressure, diabetes and arthritis (as shown by their negative coefficients), but these effects are not statistically significant. Interestingly, the estimates for high cholesterol and asthma are positive, but the effect sizes are minimal and not statistically different from zero, indicating that the observed shrinkage in disparities for these conditions are likely due to statistical randomness rather than a genuine effect of increased digitalisation on reducing health disparities.
 
-As for mental health, the only disease showing statistical significance is mood swings, with a Matching DiD estimate of -0.013, meaning that increased digitalisation has enlarged the disparities in mood swings. In more substantive words, if originally respondents with high digital literacy were $x$ percentage points less likely to be diagnosed with mood swings, increased digitalisation has now increased this difference to $x + 1.3$ percentage points. For depression and anxiety disorder, increased digitalisation also enlarged the disparities as shown by their negative coefficients, but these effects are not statistically significant.
+As for mental health, the matching DiD estimate for depression is -0.370, meaning that increased digitalisation has enlarged the disparities in depressive symptoms. In more substantive words, if originally respondents with high digital literacy reported $x$ fewer depressive symptoms, increased digitalisation has now increased this difference to $x + 0.370$. The Matching DiD estimate for anxiety disorder is -0.046, meaning that increased digitalisation has enlarged the disparities in anxiety disorder. In more substantive words, if originally respondents with high digital literacy were $x$ percentage points less likely to have anxiety disorder, increased digitalisation has now increased this difference to $x + 4.6$ percentage points. Increased digitalisation also enlarged the disparities for mood swings (as shown by its negative coefficient), but this effect is not statistically significant.
 
-In summary, the Matching DiD estimates confirm the hypothesis for the second research question, demonstrating that increased digitalisation has exacerbated the health disparities between respondents with low and high digital literacy. This exacerbation is evident in 3 out of the 10 health outcomes examined, which spans across all three health dimensions. Specifically, the three health outcomes showing statistical significance are self-rated health, physical health (diabetes), and mental health (mood swings).
+In summary, the Matching DiD estimates confirm the hypothesis for the second research question, demonstrating that increased digitalisation has exacerbated the health disparities between respondents with low and high digital literacy. This exacerbation is evident in 4 out of the 10 health outcomes examined, which spans across all three health dimensions. Specifically, the three health outcomes showing statistical significance are self-rated health, physical health (cancer), and mental health (depression and anxiety disorder).
